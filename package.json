@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/sleep-ee/BeatMaps/issues"
   },
-  "homepage": "https://github.com/sleep-ee/BeatMaps#readme"
+  "homepage": "https://github.com/sleep-ee/BeatMaps#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
