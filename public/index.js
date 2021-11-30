@@ -1,6 +1,14 @@
 let map;
 let markers = [];
 
+console.log("Hello")
+
+const testButton = document.getElementById("testingButton")
+console.log(document) //does print out document
+const testingButton = document.getElementsByClassName("testing")
+console.log(testButton) //returns null, maybe google api breaks getElementById?
+console.log(testingButton) //works
+
 function initMap() {
     const moveButton = document.getElementById("moveButton") //Button MUST be here for document to be recognized for some reason, maybe the google maps script is doing sth?
     const deleteButton = document.getElementById("deleteButton")
