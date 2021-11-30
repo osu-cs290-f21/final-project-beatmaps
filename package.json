@@ -1,0 +1,20 @@
+{
+  "name": "beatmaps",
+  "version": "1.0.0",
+  "description": "map out da beats",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo test",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sleep-ee/BeatMaps.git"
+  },
+  "author": "frankreed",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sleep-ee/BeatMaps/issues"
+  },
+  "homepage": "https://github.com/sleep-ee/BeatMaps#readme"
+}
