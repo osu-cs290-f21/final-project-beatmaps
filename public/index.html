@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <title>Simple Map</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
@@ -9,7 +9,10 @@
 <body>
 <div id="map"></div>
 
-<!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+<button type="button" id="moveButton">move</button>
+<button type="button" id="deleteButton">delete</button>
+
+
 <script
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCleAO0L-ilQ0Vb-yGOmQHV6bfnfPg72TA&callback=initMap&v=weekly"
         async
