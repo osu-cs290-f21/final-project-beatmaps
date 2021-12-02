@@ -3,8 +3,6 @@ const {parse} = require('node-html-parser');
 
 const search = async (artist, location) => {
 
-    let artistList = []
-
     artist = artist.replace(" ", "+")
     location = location.replace(" ", "+")
 
@@ -26,21 +24,22 @@ const search = async (artist, location) => {
             res.on('data', (data) => {
                 fullHTML += data
             })
-            res.on('end', () => {
-                const parsed = parse(fullHTML)
 
-                const array = parsed.querySelectorAll('.gws-horizon-textlists__tl-lif')
-                for (let i = 0; i < array.length; i++) {
-                    artistList.push({
-                        date: array[i].querySelector('.UIaQzd').innerText,
-                        month: array[i].querySelector('.wsnHcb').innerText,
-                        title: array[i].querySelector('.YOGjf').innerText,
-                        duration: array[i].querySelector('.cEZxRc').innerText,
-                        location: array[i].querySelector('.cEZxRc.zvDXNd').innerText,
-                        city: array[i].querySelectorAll('.cEZxRc.zvDXNd')[1].innerText,
+            res.on('end', () => {
+                const array = parse(fullHTML).querySelectorAll('.gws-horizon-textlists__tl-lif')
+
+                resolve(
+                    array.map(element => {
+                        return {
+                            date: element.querySelector('.UIaQzd').innerText,
+                            month: element.querySelector('.wsnHcb').innerText,
+                            title: element.querySelector('.YOGjf').innerText,
+                            duration: element.querySelector('.cEZxRc').innerText,
+                            location: element.querySelector('.cEZxRc.zvDXNd').innerText,
+                            city: element.querySelectorAll('.cEZxRc.zvDXNd')[1].innerText,
+                        }
                     })
-                }
-                resolve(artistList)
+                )
             })
         })
         req.on('error', (e) => {
