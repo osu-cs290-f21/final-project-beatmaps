@@ -1,61 +1,55 @@
-const serp = require('google-search-results-nodejs');
-const { http, https } = require('follow-redirects');
-// const https = require('https')
-const { parse } = require('node-html-parser');
+const {https} = require('follow-redirects');
+const {parse} = require('node-html-parser');
 
-const search = async(artist, location) => {
+const search = async (artist, location) => {
+
+    let artistList = []
 
     artist = artist.replace(" ", "+")
-
-    const searchString = "/search?q=" + artist + "+concert+" + location + "&oq=concerts" + "&ibp=htl;events"
-
-    console.log('Search path:', searchString)
+    location = location.replace(" ", "+")
 
     const options = {
         host: "google.com",
-        path: searchString,
+        path: "/search?q=" + artist + "+concert+" + location + "&oq=concerts" + "&ibp=htl;events",
         method: 'GET',
         headers: {
             'Content-Type': 'text/html',
+            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.55 Safari/537.36'
         }
     };
 
-    const req = https.get(options, (res)=>{
-        console.log('statuscode:', res.statusCode)
+    return new Promise((resolve, reject) => {
+        const req = https.get(options, (res) => {
 
-        let fullHTML = '';
+            let fullHTML = '';
 
-        res.on('data', (data) => {
-            fullHTML += data
+            res.on('data', (data) => {
+                fullHTML += data
+            })
+            res.on('end', () => {
+                const parsed = parse(fullHTML)
+
+                const array = parsed.querySelectorAll('.gws-horizon-textlists__tl-lif')
+                for (let i = 0; i < array.length; i++) {
+                    artistList.push({
+                        date: array[i].querySelector('.UIaQzd').innerText,
+                        month: array[i].querySelector('.wsnHcb').innerText,
+                        title: array[i].querySelector('.YOGjf').innerText,
+                        duration: array[i].querySelector('.cEZxRc').innerText,
+                        location: array[i].querySelector('.cEZxRc.zvDXNd').innerText,
+                        city: array[i].querySelectorAll('.cEZxRc.zvDXNd')[1].innerText,
+                    })
+                }
+                resolve(artistList)
+            })
         })
-        res.on('end', ()=>{
-            // console.log(fullHTML)
-            const parsed = parse(fullHTML)
-            // console.log(parsed)
-            // console.log(parsed.getElementsByTagName('img')[0])
-            return parsed
+        req.on('error', (e) => {
+            reject(e)
         })
-        res.on('error', ()=>{
-            return HTMLElement
-        })
+        req.end()
     })
-
-    req.end()
 }
 
 module.exports = {
     searchConcertsOfArtist: search,
 }
-
-// https://www.google.com/search
-// ?q=ed+sheeran+concert
-// &oq=concerts
-// &aqs=edge.0.69i59.1658j0j1
-// &sourceid=chrome
-// &ie=UTF-8
-// &ibp=htl;events
-// &rciv=evn
-// &sa=X
-// &ved=2ahUKEwjCofPrncT0AhW2JTQIHXEuAGYQ8eoFKAJ6BAgVEA8#fpstate=tldetail
-// &htivrt=events
-// &htidocid=L2F1dGhvcml0eS9ob3Jpem9uL2NsdXN0ZXJlZF9ldmVudC8yMDIxLTEyLTAzfDQxNTI4OTIzNTc3MDQ1NzU1Mjc%3D
