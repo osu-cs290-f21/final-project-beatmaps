@@ -18,6 +18,11 @@
   },
   "homepage": "https://github.com/sleep-ee/BeatMaps#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "follow-redirects": "^1.14.5",
+    "google-search-results-nodejs": "^2.0.1",
+    "htmlparser2": "^7.2.0",
+    "node-html-parser": "^5.1.0",
+    "serp": "^2.2.1"
   }
 }
