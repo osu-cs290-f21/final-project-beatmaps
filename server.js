@@ -3,7 +3,7 @@ const events = require('./events')
 
 const app = express()
 
-const eventsHTML = events.searchConcertsOfArtist("frank ocean","australia").then(
+events.searchConcertsOfArtist("frank ocean","australia").then(
     (data)=>{
         console.log(data)
     },
