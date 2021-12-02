@@ -28,6 +28,8 @@ const search = async (artist, location) => {
             res.on('end', () => {
                 const array = parse(fullHTML).querySelectorAll('.gws-horizon-textlists__tl-lif')
 
+                console.log("length:", array.length)
+
                 resolve(
                     array.map(element => {
                         return {
@@ -49,22 +51,12 @@ const search = async (artist, location) => {
     })
 }
 
+
+
 module.exports = {
     searchConcertsOfArtist: search,
 }
-<<<<<<< HEAD
-=======
 
-// https://www.google.com/search
-// ?q=ed+sheeran+concert
-// &oq=concerts
-// &aqs=edge.0.69i59.1658j0j1
-// &sourceid=chrome
-// &ie=UTF-8
-// &ibp=htl;events
-// &rciv=evn
-// &sa=X
-// &ved=2ahUKEwjCofPrncT0AhW2JTQIHXEuAGYQ8eoFKAJ6BAgVEA8#fpstate=tldetail
-// &htivrt=events
-// &htidocid=L2F1dGhvcml0eS9ob3Jpem9uL2NsdXN0ZXJlZF9ldmVudC8yMDIxLTEyLTAzfDQxNTI4OTIzNTc3MDQ1NzU1Mjc%3D
->>>>>>> 760e144 (pain and suffering. Requested HTML does not match with the website. gotta find another way of accessing the website)
+
+// https://www.google.com/search?ei=2UqpYev2JczctAad3aboAw&rciv=evn&yv=3&nfpr=0&q=concerts&start=80&asearch=evn_af&async=_id:Q5Vznb,_pms:hts,_fmt:pc
+// https://www.google.com/search?ei=2UqpYev2JczctAad3aboAw&rciv=evn&yv=3&nfpr=0&q=concerts&start=90&asearch=evn_af&async=_id:Q5Vznb,_pms:hts,_fmt:pc

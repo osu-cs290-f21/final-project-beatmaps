@@ -3,7 +3,7 @@ const events = require('./events')
 
 const app = express()
 
-events.searchConcertsOfArtist("frank ocean","australia").then(
+events.searchConcertsOfArtist("","").then(
     (data)=>{
         console.log(data)
     },
@@ -14,6 +14,8 @@ events.searchConcertsOfArtist("frank ocean","australia").then(
 
 app.use(express.static('public'))
 
-app.get('*',)
+app.get('*',(req,res) => {
+    res.status(404).end()
+})
 
 app.listen(3000)
