@@ -43,15 +43,17 @@ app.get('/callback', function(req, res) {
     spotify.getTopArtist(req, res)
 });
 
+app.get('/topArtists', function(req, res) {
+  spotify.auth(req,res)
+  spotify.getTopArtist(req, res)
+});
+
 // app.get('/topArtists', function(req, res) {
 // });
 app.get('/refresh_token', function(req, res) {
   spotify.refresh_token(req, res)
 });
 
-app.get('/me', function(req, res, next) {
-  console.log('hi')
-})
 
 console.log('Listening on 8888');
 app.listen(8888);

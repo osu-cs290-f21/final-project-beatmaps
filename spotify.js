@@ -29,7 +29,7 @@ const login_h = (req, res) => {
     res.cookie(stateKey, state);
 
     // your application requests authorization
-    const scope = 'user-read-private user-read-email';
+    const scope = 'user-read-private user-read-email user-top-read';
     res.redirect('https://accounts.spotify.com/authorize?' +
         querystring.stringify({
             response_type: 'code',
@@ -48,7 +48,7 @@ const getTopArtist_h = (req, res) => {
                 refresh_token = body.refresh_token;
 
             const options = {
-                url: 'https://api.spotify.com/v1/me',
+                url: 'https://api.spotify.com/v1/me/top/artists',
                 headers: {'Authorization': 'Bearer ' + access_token},
                 json: true
             };
