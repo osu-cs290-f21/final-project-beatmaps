@@ -1,8 +1,8 @@
 const querystring = require("querystring")
 const request = require("request")
 
-const client_id = '09b2984f748247b7bcad4e504cd7a65c'; // Your client id
-const client_secret = '4902813f323d40f48da01f88fed2ff17'; // Your secret
+const client_id = '3e8e08f448744d51bcfd558d6d461a17'; // Your client id
+const client_secret = '21d828a45c6041c0baa651c30e149c3e'; // Your secret
 const redirect_uri = 'http://localhost:8888/callback'; // Your redirect uri
 let stateKey = 'spotify_auth_state';
 
@@ -29,7 +29,7 @@ const login_h = (req, res) => {
     res.cookie(stateKey, state);
 
     // your application requests authorization
-    const scope = 'user-read-private user-read-email';
+    const scope = 'user-read-private user-read-email user-top-read';
     res.redirect('https://accounts.spotify.com/authorize?' +
         querystring.stringify({
             response_type: 'code',
@@ -48,7 +48,7 @@ const getTopArtist_h = (req, res) => {
                 refresh_token = body.refresh_token;
 
             const options = {
-                url: 'https://api.spotify.com/v1/me',
+                url: 'https://api.spotify.com/v1/me/top/artists',
                 headers: {'Authorization': 'Bearer ' + access_token},
                 json: true
             };
