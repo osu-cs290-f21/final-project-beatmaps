@@ -40,37 +40,16 @@ const login_h = (req, res) => {
         }));
 }
 
-const getTopArtist_h = (req, res) => {
-    request.post(authOptions, function (error, response, body) {
-        if (!error && response.statusCode === 200) {
+const getTopArtist_h = () => {
+    const options = {
+        url: 'https://api.spotify.com/v1/me/top/artists',
+        headers: {'Authorization': 'Bearer ' + access_token},
+        json: true
+    };
 
-            const access_token = body.access_token,
-                refresh_token = body.refresh_token;
-
-            const options = {
-                url: 'https://api.spotify.com/v1/me/top/artists',
-                headers: {'Authorization': 'Bearer ' + access_token},
-                json: true
-            };
-
-            // use the access token to access the Spotify Web API
-            request.get(options, function (error, response, body) {
-                console.log(body);
-            });
-
-            // we can also pass the token to the browser to make requests from there
-            res.redirect('/#' +
-                querystring.stringify({
-                    access_token: access_token,
-                    refresh_token: refresh_token
-                }));
-        } else {
-            res.redirect('/#' +
-                querystring.stringify({
-                    error: 'invalid_token'
-                })
-            );
-        }
+    // use the access token to access the Spotify Web API
+    request.get(options, function (error, response, body) {
+        console.log(body);
     });
 }
 
@@ -103,35 +82,61 @@ const auth_h = (req, res) => {
             json: true
         };
     }
-}
-
-const refresh_token_h = (req, res) => {
-
-    // requesting access token from refresh token
-    const refresh_token = req.query.refresh_token;
-    authOptions = {
-        url: 'https://accounts.spotify.com/api/token',
-        headers: {'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64'))},
-        form: {
-            grant_type: 'refresh_token',
-            refresh_token: refresh_token
-        },
-        json: true
-    };
 
     request.post(authOptions, function (error, response, body) {
         if (!error && response.statusCode === 200) {
-            const access_token = body.access_token;
-            res.send({
-                'access_token': access_token
-            });
+
+            const access_token = body.access_token,
+                refresh_token = body.refresh_token;
+
+            console.log(querystring.stringify({
+                access_token: access_token,
+                refresh_token: refresh_token
+            }))
+
+            // we can also pass the token to the browser to make requests from there
+            res.redirect('/topArtists' +
+                querystring.stringify({
+                    access_token: access_token,
+                    refresh_token: refresh_token
+                }));
+        } else {
+            res.redirect('/topArtists' +
+                querystring.stringify({
+                    error: 'invalid_token'
+                })
+            );
         }
-    });
+    })
 }
 
-module.exports = {
-    auth: auth_h,
-    login: login_h,
-    refresh_token: refresh_token_h,
-    getTopArtist: getTopArtist_h
-}
+    const refresh_token_h = (req, res) => {
+
+        // requesting access token from refresh token
+        const refresh_token = req.query.refresh_token;
+        authOptions = {
+            url: 'https://accounts.spotify.com/api/token',
+            headers: {'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64'))},
+            form: {
+                grant_type: 'refresh_token',
+                refresh_token: refresh_token
+            },
+            json: true
+        };
+
+        request.post(authOptions, function (error, response, body) {
+            if (!error && response.statusCode === 200) {
+                const access_token = body.access_token;
+                res.send({
+                    'access_token': access_token
+                });
+            }
+        });
+    }
+
+    module.exports = {
+        auth: auth_h,
+        login: login_h,
+        refresh_token: refresh_token_h,
+        getTopArtist: getTopArtist_h
+    }
