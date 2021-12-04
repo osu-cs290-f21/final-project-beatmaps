@@ -1,5 +1,5 @@
 /**
- * Template for OAuth workflow taken from Spotify API docs. Modified to 
+ * Template for OAuth workflow taken from Spotify API docs. Modified to
  * be specific to our project
  */
 
@@ -11,13 +11,11 @@
  * For more information, read
  * https://developer.spotify.com/web-api/authorization-guide/#authorization_code_flow
  */
-var http = require('http')
-var express = require('express'); // Express web server framework
-var request = require('request'); // "Request" library
-var cors = require('cors');
-var querystring = require('querystring');
-var cookieParser = require('cookie-parser');
-var spotify = require('./spotify')
+const express = require('express'); // Express web server framework
+const cors = require('cors');
+const cookieParser = require('cookie-parser');
+const spotify = require('./spotify');
+const events = require('./events');
 
 
 /**
@@ -26,34 +24,37 @@ var spotify = require('./spotify')
  * @return {string} The generated string
  */
 
+// events.searchConcertsOfArtist("frank ocean","australia").then(
+//     (data)=>{
+//         console.log(data)
+//     },
+//     (error)=>{
+//         console.log('failed', error)
+//     }
+// )
 
 
-var app = express();
+const app = express();
 
 app.use(express.static(__dirname + '/public'))
-   .use(cors())
-   .use(cookieParser());
+    .use(cors())
+    .use(cookieParser());
 
-app.get('/login', (req, res)=>{
+app.get('/login', (req, res) => {
     spotify.login(req, res)
 });
 
-app.get('/callback', function(req, res) {
-    spotify.auth(req,res)
-    spotify.getTopArtist(req, res)
+app.get('/callback', function (req, res) {
+    spotify.auth(req, res)
 });
 
-app.get('/topArtists', function(req, res) {
-  spotify.auth(req,res)
-  spotify.getTopArtist(req, res)
+app.get('/topArtists', function () {
+    spotify.getTopArtist()
 });
 
-// app.get('/topArtists', function(req, res) {
-// });
-app.get('/refresh_token', function(req, res) {
-  spotify.refresh_token(req, res)
+app.get('/refresh_token', function (req, res) {
+    spotify.refresh_token(req, res)
 });
-
 
 console.log('Listening on 8888');
 app.listen(8888);
