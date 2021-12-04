@@ -5,6 +5,8 @@ const client_id = '3e8e08f448744d51bcfd558d6d461a17'; // Your client id
 const client_secret = '21d828a45c6041c0baa651c30e149c3e'; // Your secret
 const redirect_uri = 'http://localhost:8888/callback'; // Your redirect uri
 let stateKey = 'spotify_auth_state';
+let access_token;
+let refresh_token;
 
 let authOptions;
 
@@ -86,7 +88,7 @@ const auth_h = (req, res) => {
     request.post(authOptions, function (error, response, body) {
         if (!error && response.statusCode === 200) {
 
-            const access_token = body.access_token,
+            access_token = body.access_token;
                 refresh_token = body.refresh_token;
 
             console.log(querystring.stringify({
@@ -95,17 +97,9 @@ const auth_h = (req, res) => {
             }))
 
             // we can also pass the token to the browser to make requests from there
-            res.redirect('/topArtists' +
-                querystring.stringify({
-                    access_token: access_token,
-                    refresh_token: refresh_token
-                }));
+            res.redirect('/topArtists');
         } else {
-            res.redirect('/topArtists' +
-                querystring.stringify({
-                    error: 'invalid_token'
-                })
-            );
+            res.redirect('/failed');
         }
     })
 }
@@ -113,7 +107,7 @@ const auth_h = (req, res) => {
     const refresh_token_h = (req, res) => {
 
         // requesting access token from refresh token
-        const refresh_token = req.query.refresh_token;
+        refresh_token = req.query.refresh_token;
         authOptions = {
             url: 'https://accounts.spotify.com/api/token',
             headers: {'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64'))},
@@ -126,7 +120,7 @@ const auth_h = (req, res) => {
 
         request.post(authOptions, function (error, response, body) {
             if (!error && response.statusCode === 200) {
-                const access_token = body.access_token;
+                access_token = body.access_token;
                 res.send({
                     'access_token': access_token
                 });
