@@ -1,0 +1,344 @@
+/* house keeping */
+*{
+    box-sizing: border-box;
+}
+
+body{
+    margin: 0;
+    font-family: sofia-pro-soft,sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    background-color: #292F36 ;
+}
+
+img{
+    max-width: 100%;
+}
+
+/* ===== range slider style ===== */
+
+input[type=range] {
+    -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
+    width: 100%; /* Specific width is required for Firefox. */
+    background: transparent; /* Otherwise white in Chrome */
+}
+  
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+}
+
+input[type=range]:focus {
+    outline: none; /* Removes the blue border. You should probably do some kind of focus styling for accessibility reasons though. */
+}
+
+input[type=range]::-ms-track {
+    width: 100%;
+    cursor: pointer;
+
+    /* Hides the slider so custom styles can be added */
+    background: transparent; 
+    border-color: transparent;
+    color: transparent;
+}
+
+/* thumb */
+/* webkit/blink */
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 1.5rem;
+    width: 1.5rem;
+    border-radius: 50%;
+    background: #4ECDC4;
+    cursor: pointer;
+    margin-top: -0.65rem;
+    transition: ease-out 0.2s;
+}
+
+input[type=range]::-webkit-slider-thumb:hover{
+    transform: scale(1.2);
+}
+
+/* Firefox */
+input[type=range]::-moz-range-thumb {
+    height: 1.5rem;
+    width: 1.5rem;
+    border-radius: 50%;
+    background: #4ECDC4;
+    cursor: pointer;
+}
+
+input[type=range]::-moz-range-thumb:hover{
+    transform: scale(1.2);
+}
+
+/* IE */
+input[type=range]::-ms-thumb {
+    height: 1.5rem;
+    width: 1.5rem;
+    border-radius: 50%;
+    background: #4ECDC4;
+    cursor: pointer;
+}
+
+input[type=range]::-ms-thumb:hover{
+    transform: scale(1.2);
+}
+
+/* track */
+input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 0.3rem;
+    cursor: pointer;
+    background: #4ECDC4;
+    border-radius: 0.25rem;
+}
+
+/* firefox */
+input[type=range]::-moz-range-track {
+    width: 100%;
+    height: 0.3rem;
+    cursor: pointer;
+    background: #4ECDC4;
+    border-radius: 0.25rem;
+}
+
+/* IE */
+input[type=range]::-ms-track {
+    width: 100%;
+    height: 0.3rem;
+    cursor: pointer;
+    background: #4ECDC4;
+    border-radius: 0.25rem;
+}
+
+/* input base style */
+
+.text-input p{
+    color: #F6FFF7;
+    margin: 0 0 0.4rem 0;
+    margin-left: 0.5rem;
+    font-weight: lighter;
+}
+
+.type-input{
+    font: inherit;
+    border: none;
+    border-radius: 0.6rem;
+    width: 100%;
+    background-color: #3E4448;
+    color: #4ECDC4;
+    height: 2rem;
+    padding: 0 1rem 0.1rem 0.7rem;
+    line-height: 1.5;
+    transition: ease-out 0.2s;
+}
+
+.type-input:focus, input:focus{
+    outline: none;
+}
+
+.type-input::placeholder{
+    color: #4ECDC4;
+    opacity: 0.5;
+}
+
+/* navbar */
+
+.nav{
+    position: absolute;
+    width: 100%;
+    padding: 4rem;
+}
+
+.nav img{
+    max-width: 20rem;
+    height: auto;
+}
+
+/* auth template */
+
+#auth{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+}
+
+#auth h1{
+    color: #F6FFF7;
+    font-size: 1.5rem;
+}
+
+#auth .btn{
+    margin: 2rem 0 1.5rem 0;
+}
+
+#auth button{
+    color: #F6FFF7;
+    background-color: #4ECDC4;
+    font: inherit;
+    font-size: 1.2rem;
+    font-weight: bold;
+    line-height: 0.8;
+    width: 25rem;
+    height: 3rem;
+    border: none;
+    border-radius: 1.5rem;
+    transition: ease-in 0.2s;
+}
+
+#auth button:hover{
+    transform: scale(1.05);
+    background-color: #FF6B6B;
+    cursor: pointer;
+}
+
+#auth p{
+    color: #4ECDC4;
+}
+
+/* ====== initial info template ====== */
+
+#init-info{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 30vh;
+    /* justify-content: center; */
+}
+
+#user-info{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+    /* width: 20rem; */
+}
+
+#user-icon{
+    max-width: 7rem;
+    border-radius: 50%;
+}
+
+.user-name{
+    color: #F6FFF7;
+    text-align: center;
+}
+
+/* time-input */
+
+#user-inputs{
+    border: red solid 1px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 46rem;
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+:root{
+    --location-basis: 15rem;
+}
+
+/* REVISIT */
+#location{
+    width: var(--location-basis);
+}
+
+#location input{
+    width: 100%;
+}
+
+#location input:hover{
+    width: calc(var(--location-basis) + 1rem);
+}
+
+#location input:focus{
+    width: 18rem;
+}
+
+#time-frame{
+    display: flex;
+    flex-direction: column;
+}
+
+#time-frame div input{
+    width: 12rem;
+    text-align: center;
+}
+
+#time-start{
+    border-radius: 0.6rem 0  0 0.6rem;
+}
+
+#time-end{
+    border-radius: 0 0.6rem 0.6rem 0;
+    text-align: center;
+}
+
+/* hover animation */
+
+#time-frame input:hover{
+    width: 13rem;
+}
+
+#time-frame input:focus{
+    width: 13rem;
+}
+
+/* radius input */
+
+#radius{
+    display: flex;
+    flex-direction: column;
+}
+
+#radius-containter{
+    width: 30rem;
+}
+
+#radius-input{
+    width: 4.5rem;
+    text-align: center;
+    margin-right: 1.5rem;
+}
+
+.radius-slider{
+    max-width: 20rem;
+}
+
+/* hover animation */
+
+#radius-input:hover{
+    width: 5rem;
+}
+
+#radius-input:focus{
+    width: 5rem;
+}
+
+/* search button */
+#user-inputs .btn{
+    align-self: flex-end;
+}
+
+#user-inputs button{
+    border: none;
+    border-radius: 1.5rem;
+    padding-bottom: 0.3rem;
+    width: 8rem;
+    height: 2.5rem;
+    font-size: 2rem;
+    background-color: #FF6B6B;
+    color: white;
+    font: inherit;
+    transition: ease-out 0.2s;
+}
+
+#user-inputs button:hover{
+    transform: scale(1.1);
+    background-color: #4ECDC4;
+}
