@@ -40,13 +40,6 @@ app.get('/topArtists', function () {
     )
 });
 
-app.get('/refresh_token', function (req, res) {
-    spotify.refresh_token(req, res)
-});
-
-app.get('*', (req, res) => {
-    res.status(404).sendFile('/public/404.html')
-})
 
 console.log('Listening on 8888');
 app.listen(8888);
