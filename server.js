@@ -1,42 +1,23 @@
-const express = require('express'); // Express web server framework
-const cors = require('cors');
-const cookieParser = require('cookie-parser');
-const spotify = require('./spotify');
-const {getTopArtist} = require("./spotify");
+const express = require('express')
+const events = require('./events')
 
-const app = express();
+const app = express()
 
-app.use(express.static(__dirname + '/public'))
-    .use(cors())
-    .use(cookieParser());
+events.searchConcertsOfArtist(new Date(2021, 11, 5), new Date(2021, 11, 15), ["KALEO", "Jubilate!"], "Oregon").then(
+    (data) => {
+        console.log("In server", data)
+    },
+    (error) => {
+        console.log('failed', error)
+    }
+)
 
-app.get('/login', (req, res) => {
-    spotify.login(req, res)
-});
-
-app.get('/callback', function (req, res) {
-    spotify.auth(req, res)
-});
-
-app.get('/topArtists', function () {
-    const artists = getTopArtist()
-    artists.then(
-        (data) => {
-            console.log(data)
-        },
-        (err) => {
-            console.log(err)
-        }
-    )
-});
-
-app.get('/refresh_token', function (req, res) {
-    spotify.refresh_token(req, res)
-});
+app.use(express.static('public'))
 
 app.get('*', (req, res) => {
     res.status(404).sendFile('/public/404.html')
 })
 
-console.log('Listening on 8888');
-app.listen(8888);
+app.listen(3000,
+    () => console.log("Listening 3000")
+)
