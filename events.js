@@ -99,21 +99,30 @@ const search = async (artist, location, date) => {
  * @returns {Promise<*[]>} List of event Objects
  */
 const getEvents = async (start_date, end_date, artists, location) => {
+    let current_event_list = [];
+    let promise_list = []
     for (let i = start_date; i < end_date; i.setDate(i.getDate() + 1)) { //loop through date
-        const date_string = `${monthString(i.getMonth())} ${i.getDate()}${date_suffix(i.getDate())}` //construct string of date "[Month] [Date][Date suffix]"
+        const date_string = `${utility.monthString(i.getMonth())} ${i.getDate()}${utility.date_suffix(i.getDate())}` //construct string of date "[Month] [Date][Date suffix]"
+
         for (let j = 0; j < artists.length; j++) { //loop through artist
-            await search(artists[j], location, date_string).then(
-                data => current_event_list.push.apply(current_event_list, data),
-                (error) => {
-                    throw error
-                }
+            promise_list.push(search(artists[j], location, date_string).then(
+                    data => current_event_list.push.apply(current_event_list, data),
+                    (error) => {
+                        throw error
+                    }
+                )
             )
         }
     }
-    current_event_list = [...new Set(current_event_list)].sort(compareDate)
-    return current_event_list
+    return Promise.all(promise_list).then(
+        () => {
+            current_event_list = [...new Set(current_event_list)].sort(utility.compareDate)
+
+            return current_event_list
+        }
+    )
 }
 
 module.exports = {
-    searchConcertsOfArtist: getEvents
+    searchConcertsOfArtist: getEvents,
 }
