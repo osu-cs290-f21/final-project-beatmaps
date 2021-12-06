@@ -3,6 +3,7 @@ const events = require('./events')
 const spotify = require('./spotify');
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const utility = require("./utility")
 
 const app = express()
 
@@ -10,14 +11,15 @@ app.use(express.static(__dirname + '/public'))
     .use(cors())
     .use(cookieParser());
 
-events.searchConcertsOfArtist(new Date(2021, 11, 5), new Date(2021, 11, 15), ["KALEO", "Jubilate!"], "Oregon").then(
+events.searchConcertsOfArtist(new Date(2021, 11, 5), new Date(2021, 11, 9), [""], "Oregon").then(
     (data) => {
-        console.log("In server", data)
+        utility.filterZipCode(data, "97229")
     },
     (error) => {
         console.log('failed', error)
     }
 )
+
 
 app.use(express.static('public'))
 
