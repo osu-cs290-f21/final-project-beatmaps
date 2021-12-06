@@ -1,2 +1,2 @@
-var location = document.querySelector('location')
-console.log(location)
+const thing = document.getElementById('location-container')
+console.log(thing)
