@@ -1,4 +1,4 @@
-const maps = require('./maps')
+const {geocode, distance} = require("./maps");
 
 /**
  * compare 2 objects with the "date" attributes
@@ -23,14 +23,16 @@ function monthString_h(month) {
     return ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][month]
 }
 
-function filterZipCode_h(event_array, zip_code) {
-    let destinations = event_array.map(
-        element => {
-            return element.location
+function getDistance_h(origin, event_location) {
+    return Promise.all([
+        geocode(origin),
+        geocode(event_location.split(", ").at(-1))
+    ]).then(
+        (data)=> {
+            console.log(data)
+            return distance(data[0], data[1])
         }
     )
-    maps.distance(zip_code, destinations)
-    // console.log(distances)
 }
 
 // export function filterCity(event_array, city)
@@ -39,5 +41,5 @@ module.exports = {
     compareDate: compareDate_h,
     date_suffix: date_suffix_h,
     monthString: monthString_h,
-    filterZipCode: filterZipCode_h
+    getDistance: getDistance_h
 }

@@ -11,15 +11,14 @@ app.use(express.static(__dirname + '/public'))
     .use(cors())
     .use(cookieParser());
 
-events.searchConcertsOfArtist(new Date(2021, 11, 5), new Date(2021, 11, 9), [""], "Oregon").then(
+events.searchConcertsOfArtist(new Date(2021, 11, 5), new Date(2021, 11, 15), [""], "97229").then(
     (data) => {
-        utility.filterZipCode(data, "97229")
+        console.log("Data:", data)
     },
     (error) => {
         console.log('failed', error)
     }
 )
-
 
 app.use(express.static('public'))
 
