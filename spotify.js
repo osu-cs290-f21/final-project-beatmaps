@@ -42,9 +42,9 @@ const login_h = (req, res) => {
         }));
 }
 
-const getTopArtist_h = async () => {
+const getArtist_h = async (url) => {
     const options = {
-        url: 'https://api.spotify.com/v1/me/top/artists',
+        url: 'https://api.spotify.com/v1/me/' + url,
         headers: {'Authorization': 'Bearer ' + access_token},
         json: true
     };
@@ -129,5 +129,5 @@ module.exports = {
     auth: auth_h,
     login: login_h,
     refresh_token: refresh_token_h,
-    getTopArtist: getTopArtist_h
+    getTopArtist: getArtist_h
 }

@@ -37,7 +37,7 @@ app.get('/findEvent', function (req, res) {
 })
 
 app.get('/topArtists', function () {
-    const artists = getTopArtist()
+    const artists = getTopArtist('top/artists')
     artists.then(
         (data) => {
             console.log(data)
