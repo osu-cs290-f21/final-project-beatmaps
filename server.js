@@ -18,7 +18,7 @@ app.use(cookieParser());
 
 app.get('/', function (req, res) {
     res.status(200).render('initPage.handlebars', {
-        auth: true
+        needAuth: true
     })
 })
 
@@ -32,7 +32,7 @@ app.get('/callback', function (req, res) {
 
 app.get('/findEvent', function (req, res) {
     res.status(200).render('initPage.handlebars', {
-        auth: false
+        needAuth: false
     })
 })
 
