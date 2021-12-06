@@ -46,8 +46,11 @@ app.get('/topArtists', function () {
             console.log(err)
         }
     )
-});
+})
 
+app.get('*', (req, res) => {
+    res.status(404).sendFile('/public/404.html')
+})
 
 console.log('Listening on 8888');
 app.listen(8888);
