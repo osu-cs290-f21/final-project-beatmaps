@@ -1,14 +1,15 @@
 const express = require('express'); // Express web server framework
 var exphbs = require('express-handlebars')
-const cors = require('cors');
-const cookieParser = require('cookie-parser');
 const spotify = require('./spotify');
+const cookieParser = require("cookie-parser");
+const cors = require("cors");
+const utility = require("./utility")
 const {getTopArtist} = require("./spotify");
 const events = require('./events')
 
-events.searchConcertsOfArtist(new Date(2021, 11, 5), new Date(2021, 11, 15), ["KALEO", "Jubilate!"], "Oregon").then(
+events.searchConcertsOfArtist(new Date(2021, 11, 5), new Date(2021, 11, 9), [""], "Oregon").then(
     (data) => {
-        console.log("In server", data)
+        utility.filterZipCode(data, "97229")
     },
     (error) => {
         console.log('failed', error)
@@ -25,6 +26,8 @@ app.set('view engine', 'handlebars')
 //app.use(express.static(__dirname + '/public'))
 app.use(cors())
 app.use(cookieParser());
+
+app.use(express.static('public'))
 
 app.get('/', function (req, res) {
     res.status(200).render('initPage.handlebars', {

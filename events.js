@@ -92,7 +92,6 @@ const getEvents = async (start_date, end_date, artists, location) => {
     return Promise.all(promise_list).then(
         () => {
             current_event_list = [...new Set(current_event_list)].sort(utility.compareDate)
-
             return current_event_list
         }
     )
