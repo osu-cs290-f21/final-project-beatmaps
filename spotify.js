@@ -40,7 +40,6 @@ const login_h = (req, res) => {
             redirect_uri: redirect_uri,
             state: state
         }));
-    
 }
 
 const getTopArtist_h = async () => {
@@ -95,7 +94,7 @@ const auth_h = (req, res) => {
             refresh_token = body.refresh_token;
 
             // we can also pass the token to the browser to make requests from there
-            res.redirect('/topArtists');
+            res.redirect('/findEvent');
         } else {
             res.redirect('/failed');
         }
