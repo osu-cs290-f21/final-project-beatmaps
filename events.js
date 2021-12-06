@@ -1,37 +1,12 @@
 const {https} = require('follow-redirects');
 const {parse} = require('node-html-parser');
-
-let current_event_list = [];
-
+const utility = require("./utility")
 /**
  * Limit number to a range
  */
 Number.prototype.clamp = function (min, max) {
     return Math.min(Math.max(this, min), max);
 };
-
-/**
- * compare 2 objects with the "date" attributes
- */
-function compareDate(a, b) {
-    const aDate = parseInt(a.date)
-    const bDate = parseInt(b.date)
-    return (aDate - bDate).clamp(-1, 1)
-}
-
-/**
- * Return the suffix of the day of the month ("st", "nd", etc.)
- */
-function date_suffix(date) {
-    return ['th', 'st', 'nd', 'rd', 'th'][date.clamp(0,4)]
-}
-
-/**
- * Return string of corresponding month number, assuming January is 0
- */
-function monthString(month) {
-    return ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][month]
-}
 
 /**
  * Send a search query to Google with a templated search string, return a list of about 10 events according to inputs
