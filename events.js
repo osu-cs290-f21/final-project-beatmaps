@@ -1,14 +1,54 @@
 const {https} = require('follow-redirects');
 const {parse} = require('node-html-parser');
 
-const search = async (artist, location) => {
+let current_event_list = [];
+
+/**
+ * Limit number to a range
+ */
+Number.prototype.clamp = function (min, max) {
+    return Math.min(Math.max(this, min), max);
+};
+
+/**
+ * compare 2 objects with the "date" attributes
+ */
+function compareDate(a, b) {
+    const aDate = parseInt(a.date)
+    const bDate = parseInt(b.date)
+    return (aDate - bDate).clamp(-1, 1)
+}
+
+/**
+ * Return the suffix of the day of the month ("st", "nd", etc.)
+ */
+function date_suffix(date) {
+    return ['th', 'st', 'nd', 'rd', 'th'][date.clamp(0,4)]
+}
+
+/**
+ * Return string of corresponding month number, assuming January is 0
+ */
+function monthString(month) {
+    return ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][month]
+}
+
+/**
+ * Send a search query to Google with a templated search string, return a list of about 10 events according to inputs
+ * @param artist Artist to search for
+ * @param location Location to search around
+ * @param date date string to search around
+ * @returns {Promise<unknown>} List of events
+ */
+const search = async (artist, location, date) => {
 
     artist = artist.replace(" ", "+")
     location = location.replace(" ", "+")
+    date = date.replace(" ", "+")
 
     const options = {
         host: "google.com",
-        path: "/search?q=" + artist + "+concert+" + location + "&oq=concerts" + "&ibp=htl;events",
+        path: "/search?q=" + artist + "+concert+" + location + "+on+" + date + "&oq=concerts" + "&ibp=htl;events",
         method: 'GET',
         headers: {
             'Content-Type': 'text/html',
@@ -37,6 +77,7 @@ const search = async (artist, location) => {
                             duration: element.querySelector('.cEZxRc').innerText,
                             location: element.querySelector('.cEZxRc.zvDXNd').innerText,
                             city: element.querySelectorAll('.cEZxRc.zvDXNd')[1].innerText,
+                            path: options.path
                         }
                     })
                 )
@@ -49,6 +90,30 @@ const search = async (artist, location) => {
     })
 }
 
+/**
+ * Get events by requesting the events page from Google and parsing the HTML
+ * @param start_date The start date of your search range (type Date)
+ * @param end_date The end date of your search range(type Date)
+ * @param artists The artists that you want to loop through (type Array)
+ * @param location The location that you want to search around (type String)
+ * @returns {Promise<*[]>} List of event Objects
+ */
+const getEvents = async (start_date, end_date, artists, location) => {
+    for (let i = start_date; i < end_date; i.setDate(i.getDate() + 1)) { //loop through date
+        const date_string = `${monthString(i.getMonth())} ${i.getDate()}${date_suffix(i.getDate())}` //construct string of date "[Month] [Date][Date suffix]"
+        for (let j = 0; j < artists.length; j++) { //loop through artist
+            await search(artists[j], location, date_string).then(
+                data => current_event_list.push.apply(current_event_list, data),
+                (error) => {
+                    throw error
+                }
+            )
+        }
+    }
+    current_event_list = [...new Set(current_event_list)].sort(compareDate)
+    return current_event_list
+}
+
 module.exports = {
-    searchConcertsOfArtist: search,
+    searchConcertsOfArtist: getEvents
 }
