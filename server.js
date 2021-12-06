@@ -7,9 +7,9 @@ const utility = require("./utility")
 const {getTopArtist} = require("./spotify");
 const events = require('./events')
 
-events.searchConcertsOfArtist(new Date(2021, 11, 5), new Date(2021, 11, 9), [""], "Oregon").then(
+events.searchConcertsOfArtist(new Date(2021, 11, 5), new Date(2021, 11, 15), [""], "97229").then(
     (data) => {
-        utility.filterZipCode(data, "97229")
+        console.log("Data:", data)
     },
     (error) => {
         console.log('failed', error)

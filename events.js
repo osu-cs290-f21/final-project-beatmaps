@@ -1,6 +1,7 @@
 const {https} = require('follow-redirects');
 const {parse} = require('node-html-parser');
 const utility = require("./utility")
+const {getDistance} = require("./utility");
 /**
  * Limit number to a range
  */
@@ -18,12 +19,11 @@ Number.prototype.clamp = function (min, max) {
 const search = async (artist, location, date) => {
 
     artist = artist.replace(" ", "+")
-    location = location.replace(" ", "+")
     date = date.replace(" ", "+")
 
     const options = {
         host: "google.com",
-        path: "/search?q=" + artist + "+concert+" + location + "+on+" + date + "&oq=concerts" + "&ibp=htl;events",
+        path: "/search?q=" + artist + "+concert+" + location.replace(" ", "+") + "+on+" + date + "&oq=concerts" + "&ibp=htl;events",
         method: 'GET',
         headers: {
             'Content-Type': 'text/html',
@@ -43,19 +43,24 @@ const search = async (artist, location, date) => {
             res.on('end', () => {
                 const array = parse(fullHTML).querySelectorAll('.gws-horizon-textlists__tl-lif')
 
-                resolve(
-                    array.map(element => {
-                        return {
-                            date: element.querySelector('.UIaQzd').innerText,
-                            month: element.querySelector('.wsnHcb').innerText,
-                            title: element.querySelector('.YOGjf').innerText,
-                            duration: element.querySelector('.cEZxRc').innerText,
-                            location: element.querySelector('.cEZxRc.zvDXNd').innerText,
-                            city: element.querySelectorAll('.cEZxRc.zvDXNd')[1].innerText,
-                            path: options.path
+                const result_array = array.map(element => {
+                    return getDistance(location, element.querySelector('.cEZxRc.zvDXNd').innerText).then((distance)=> {
+                            return {
+                                date: element.querySelector('.UIaQzd').innerText,
+                                month: element.querySelector('.wsnHcb').innerText,
+                                title: element.querySelector('.YOGjf').innerText,
+                                duration: element.querySelector('.cEZxRc').innerText,
+                                location: location,
+                                city: element.querySelectorAll('.cEZxRc.zvDXNd')[1].innerText,
+                                path: options.path,
+                                coords: distance.coords,
+                                distance: distance.distance,
+                                travel_time: distance.travel_time
+                            }
                         }
-                    })
-                )
+                    )
+                })
+                resolve(Promise.all(result_array))
             })
         })
         req.on('error', (e) => {
@@ -63,6 +68,7 @@ const search = async (artist, location, date) => {
         })
         req.end()
     })
+
 }
 
 /**
@@ -73,7 +79,7 @@ const search = async (artist, location, date) => {
  * @param location The location that you want to search around (type String)
  * @returns {Promise<*[]>} List of event Objects
  */
-const getEvents = async (start_date, end_date, artists, location) => {
+const getEvents = async (start_date, end_date, artists, location, radius) => {
     let current_event_list = [];
     let promise_list = []
     for (let i = start_date; i < end_date; i.setDate(i.getDate() + 1)) { //loop through date
