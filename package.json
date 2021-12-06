@@ -4,6 +4,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "follow-redirects": "^1.14.5",
+    "google-distance-matrix": "^1.1.1",
     "node-html-parser": "^5.1.0",
     "request": "^2.88.2"
   }
