@@ -2,6 +2,7 @@ const {https} = require('follow-redirects');
 const {parse} = require('node-html-parser');
 const utility = require("./utility")
 const {getDistance} = require("./utility");
+const {geocode} = require("./maps");
 /**
  * Limit number to a range
  */
@@ -14,12 +15,15 @@ Number.prototype.clamp = function (min, max) {
  * @param artist Artist to search for
  * @param location Location to search around
  * @param date date string to search around
+ * @param radius radius from location to filter events
  * @returns {Promise<unknown>} List of events
  */
-const search = async (artist, location, date) => {
+const search_h = async (artist, location, date, radius) => {
 
     artist = artist.replace(" ", "+")
     date = date.replace(" ", "+")
+
+    const location_coords = await geocode(location)
 
     const options = {
         host: "google.com",
@@ -43,24 +47,32 @@ const search = async (artist, location, date) => {
             res.on('end', () => {
                 const array = parse(fullHTML).querySelectorAll('.gws-horizon-textlists__tl-lif')
 
-                const result_array = array.map(element => {
-                    return getDistance(location, element.querySelector('.cEZxRc.zvDXNd').innerText).then((distance)=> {
-                            return {
-                                date: element.querySelector('.UIaQzd').innerText,
-                                month: element.querySelector('.wsnHcb').innerText,
-                                title: element.querySelector('.YOGjf').innerText,
-                                duration: element.querySelector('.cEZxRc').innerText,
-                                location: location,
-                                city: element.querySelectorAll('.cEZxRc.zvDXNd')[1].innerText,
-                                path: options.path,
-                                coords: distance.coords,
-                                distance: distance.distance,
-                                travel_time: distance.travel_time
-                            }
+                let result_array = []
+                let promise_array = []
+
+                for (let i = 0; i < array.length; i++) {
+                    const destination = array[i].querySelector('.cEZxRc.zvDXNd').innerText
+                    promise_array.push(getDistance(location_coords, destination).then(
+                        data => {
+                            if (data.coords[0] !== data.coords[1] && data.coords[0] !== 0 && data.distance <= radius)
+                                result_array.push({
+                                        date: array[i].querySelector('.UIaQzd').innerText,
+                                        month: array[i].querySelector('.wsnHcb').innerText,
+                                        title: array[i].querySelector('.YOGjf').innerText,
+                                        duration: array[i].querySelector('.cEZxRc').innerText,
+                                        location: destination,
+                                        city: array[i].querySelectorAll('.cEZxRc.zvDXNd')[1].innerText,
+                                        path: options.path,
+                                        coords: data.coords,
+                                        distance: data.distance
+                                })
                         }
-                    )
-                })
-                resolve(Promise.all(result_array))
+                    ))
+                }
+
+                resolve(Promise.all(promise_array).then(() => {
+                    return result_array
+                }))
             })
         })
         req.on('error', (e) => {
@@ -77,17 +89,20 @@ const search = async (artist, location, date) => {
  * @param end_date The end date of your search range(type Date)
  * @param artists The artists that you want to loop through (type Array)
  * @param location The location that you want to search around (type String)
+ * @param radius The radius to limit results in
  * @returns {Promise<*[]>} List of event Objects
  */
-const getEvents = async (start_date, end_date, artists, location, radius) => {
+const getEvents = async (start_date, end_date, artists, location, radius = 30) => {
     let current_event_list = [];
     let promise_list = []
     for (let i = start_date; i < end_date; i.setDate(i.getDate() + 1)) { //loop through date
         const date_string = `${utility.monthString(i.getMonth())} ${i.getDate()}${utility.date_suffix(i.getDate())}` //construct string of date "[Month] [Date][Date suffix]"
 
         for (let j = 0; j < artists.length; j++) { //loop through artist
-            promise_list.push(search(artists[j], location, date_string).then(
-                    data => current_event_list.push.apply(current_event_list, data),
+            promise_list.push(search_h(artists[j], location, date_string, radius).then(
+                    data => {
+                        current_event_list.push.apply(current_event_list, data)
+                    },
                     (error) => {
                         throw error
                     }
@@ -97,7 +112,7 @@ const getEvents = async (start_date, end_date, artists, location, radius) => {
     }
     return Promise.all(promise_list).then(
         () => {
-            current_event_list = [...new Set(current_event_list)].sort(utility.compareDate)
+            current_event_list = [...new Map(current_event_list.map(v => [JSON.stringify(v), v])).values()].sort(utility.compareDate)
             return current_event_list
         }
     )
@@ -105,4 +120,5 @@ const getEvents = async (start_date, end_date, artists, location, radius) => {
 
 module.exports = {
     searchConcertsOfArtist: getEvents,
+    search: search_h
 }

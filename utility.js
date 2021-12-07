@@ -24,13 +24,12 @@ function monthString_h(month) {
 }
 
 function getDistance_h(origin, event_location) {
-    return Promise.all([
-        geocode(origin),
-        geocode(event_location.split(", ").at(-1))
-    ]).then(
+    return geocode(event_location.split(", ").at(-1)).then(
         (data)=> {
-            console.log(data)
-            return distance(data[0], data[1])
+            return {
+                "distance": distance(origin, data),
+                "coords": data
+            }
         }
     )
 }
