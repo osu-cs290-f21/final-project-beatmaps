@@ -3,7 +3,6 @@ const events = require('./events')
 const spotify = require('./spotify');
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
-const utility = require("./utility")
 
 const app = express()
 
@@ -11,7 +10,7 @@ app.use(express.static(__dirname + '/public'))
     .use(cors())
     .use(cookieParser());
 
-events.searchConcertsOfArtist(new Date(2021, 11, 5), new Date(2021, 11, 15), [""], "97229").then(
+events.searchConcertsOfArtist(new Date(2021, 11, 5), new Date(2021, 11, 15), [""], "97229", 10).then(
     (data) => {
         console.log("Data:", data)
     },
