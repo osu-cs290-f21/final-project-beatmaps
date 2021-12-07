@@ -1,13 +1,16 @@
-const express = require('express'); // Express web server framework
-var exphbs = require('express-handlebars')
+const express = require('express')
+const events = require('./events')
 const spotify = require('./spotify');
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
-const utility = require("./utility")
-const {getTopArtist} = require("./spotify");
-const events = require('./events')
 
-events.searchConcertsOfArtist(new Date(2021, 11, 5), new Date(2021, 11, 15), [""], "97229").then(
+const app = express()
+
+app.use(express.static(__dirname + '/public'))
+    .use(cors())
+    .use(cookieParser());
+
+events.searchConcertsOfArtist(new Date(2021, 11, 5), new Date(2021, 11, 15), [""], "97229", 10).then(
     (data) => {
         console.log("Data:", data)
     },
@@ -16,43 +19,15 @@ events.searchConcertsOfArtist(new Date(2021, 11, 5), new Date(2021, 11, 15), [""
     }
 )
 
-const app = express();
-
-app.engine('handlebars', exphbs.engine({ default: 'main'}))
-app.set('view engine', 'handlebars')
-
-//app.use(express.static('public'));
-
-//app.use(express.static(__dirname + '/public'))
-app.use(cors())
-app.use(cookieParser());
-
 app.use(express.static('public'))
 
-app.get('/', function (req, res) {
-    res.status(200).render('initPage.handlebars', {
-        needAuth: true
-    })
-})
-
+//spotify login stuff
 app.get('/login', (req, res) => {
     spotify.login(req, res)
 });
 
 app.get('/callback', function (req, res) {
     spotify.auth(req, res)
-});
-
-app.get('/topArtists', function () {
-    const artists = getTopArtist()
-    artists.then(
-        (data) => {
-            console.log(data)
-        },
-        (err) => {
-            console.log(err)
-        }
-    )
 });
 
 app.get('/refresh_token', function (req, res) {
