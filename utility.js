@@ -16,6 +16,22 @@ function date_suffix_h(date) {
     return ['th', 'st', 'nd', 'rd', 'th'][date.clamp(0, 4)]
 }
 
+
+/**
+ * Generates a random string containing numbers and letters
+ * @param  {number} length The length of the string
+ * @return {string} The generated string
+ */
+function randomString (length) {
+    let text = '';
+    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+    for (let i = 0; i < length; i++) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return text;
+}
+
 /**
  * Return string of corresponding month number, assuming January is 0
  */
@@ -24,11 +40,14 @@ function monthString_h(month) {
 }
 
 function getDistance_h(origin, event_location) {
-    return geocode(event_location.split(", ").at(-1)).then(
-        (data)=> {
+    return Promise.all([
+        geocode(origin),
+        geocode(event_location.split(", ").at(-1))
+    ]).then(
+        (data) => {
             return {
-                "distance": distance(origin, data),
-                "coords": data
+                "distance": distance(data[0], data[1]),
+                "coords": data[1]
             }
         }
     )
@@ -40,5 +59,6 @@ module.exports = {
     compareDate: compareDate_h,
     date_suffix: date_suffix_h,
     monthString: monthString_h,
-    getDistance: getDistance_h
+    getDistance: getDistance_h,
+    generateRandomString: randomString
 }
