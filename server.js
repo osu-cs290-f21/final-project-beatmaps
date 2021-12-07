@@ -3,26 +3,32 @@ const events = require('./events')
 const spotify = require('./spotify');
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const bodyParser = require('body-parser');
 
 const app = express()
 
 app.use(express.static(__dirname + '/public'))
     .use(cors())
-    .use(cookieParser());
-
-const time1 = new Date()
-events.getConcerts(new Date(2021, 11, 5), new Date(2021, 11, 15), [""], "97229").then(
-    (data) => {
-        console.log("Data:", events.filterRadius(data, 10))
-        const time2 = new Date()
-        console.log("Time:", time2 - time1)
-    },
-    (error) => {
-        console.log('failed', error)
-    }
-)
+    .use(cookieParser())
+    .use(bodyParser.urlencoded({extended: false}))
 
 app.use(express.static('public'))
+
+app.post('/search', (req, res, next) => {
+    console.log("received")
+    console.log(req.body)
+    events.getConcerts(new Date(req.body.start_date), new Date(req.body.end_date), [""], req.body.location).then(
+        (data) => {
+            console.log(data)
+            const filtered_data = events.filterRadius(data, req.body.radius)
+            res.status(200).send(filtered_data)
+            res.end()
+        },
+        () => {
+            next()
+        }
+    )
+})
 
 //spotify login stuff
 app.get('/login', (req, res) => {

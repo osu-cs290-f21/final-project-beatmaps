@@ -115,6 +115,12 @@ const getConcerts_h = async (start_date, end_date, artists, location) => {
     )
 }
 
+/**
+ * filter events from event_array that is farther from the radius
+ * @param {Object[]}event_array
+ * @param {number}radius
+ * @returns {Object[]}
+ */
 const filterRadius_h = (event_array, radius) => {
     let result_array = []
     for(let i = 0; i < event_array.length; i++){
