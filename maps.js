@@ -40,12 +40,7 @@ const distance_h = (origin, destination) => {
     return R * c; // in miles
 }
 
-const getCache = () => {
-    console.log(cache)
-}
-
 module.exports = {
     distance: distance_h,
-    geocode: geocode_h,
-    printCache: getCache
+    geocode: geocode_h
 }
