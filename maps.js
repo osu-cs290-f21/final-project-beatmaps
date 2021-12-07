@@ -1,11 +1,11 @@
-const traveltimejs = require('./library/traveltime');
+const {geocoding} = require("./library/traveltime");
 //store your credentials in an environment variable
 process.env['TRAVELTIME_ID'] = 'dd503376';
 process.env['TRAVELTIME_KEY'] = '606ddd0ff147c22f1280f7a981fc090a';
 
 let cache = {}
 
-const geocode_h = (query) => {
+const geocode_h = async (query) => {
     const options = {
         query: query + " OR",
         within_country: 'USA',
@@ -14,7 +14,7 @@ const geocode_h = (query) => {
     if (options.query in cache) {
         return cache[options.query]
     } else {
-        return traveltimejs.geocoding(options).then(
+        return geocoding(options).then(
             (data) => {
                 cache[options.query] = data.features[0].geometry.coordinates
                 return cache[options.query]
@@ -40,7 +40,12 @@ const distance_h = (origin, destination) => {
     return R * c; // in miles
 }
 
+const getCache = () => {
+    console.log(cache)
+}
+
 module.exports = {
     distance: distance_h,
-    geocode: geocode_h
+    geocode: geocode_h,
+    printCache: getCache
 }
