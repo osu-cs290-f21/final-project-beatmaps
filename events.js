@@ -69,6 +69,7 @@ const search_h = async (artist, location, date) => {
                 }
 
                 resolve(Promise.all(promise_array).then(() => {
+                    console.log(result_array)
                     return result_array
                 }))
             })
@@ -93,7 +94,7 @@ const getConcerts_h = async (start_date, end_date, artists, location) => {
     let current_event_list = [];
     let promise_list = [];
     await geocode(location)
-    for (let i = start_date; i < end_date; i.setDate(i.getDate() + 1)) { //loop through date
+    for (let i = start_date; i <= end_date; i.setDate(i.getDate() + 1)) { //loop through date
         const date_string = `${utility.monthString(i.getMonth())} ${i.getDate()}${utility.date_suffix(i.getDate())}` //construct string of date "[Month] [Date][Date suffix]"
 
         for (let j = 0; j < artists.length; j++) { //loop through artist
@@ -110,8 +111,7 @@ const getConcerts_h = async (start_date, end_date, artists, location) => {
     }
     return Promise.all(promise_list).then(
         () => {
-            current_event_list = [...new Map(current_event_list.map(v => [JSON.stringify(v), v])).values()].sort(utility.compareDate)
-            return current_event_list
+            return [...new Map(current_event_list.map(v => [JSON.stringify(v), v])).values()].sort(utility.compareDate)
         }
     )
 }
@@ -131,8 +131,6 @@ const filterRadius_h = (event_array, radius) => {
     }
     return result_array
 }
-
-
 
 module.exports = {
     getConcerts: getConcerts_h,

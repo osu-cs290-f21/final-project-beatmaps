@@ -4,6 +4,7 @@ const spotify = require('./spotify');
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const bodyParser = require('body-parser');
+const {splitCity} = require("./utility");
 
 const app = express()
 
@@ -14,17 +15,23 @@ app.use(express.static(__dirname + '/public'))
 
 app.use(express.static('public'))
 
+app.get('/', (req, res)=>{
+    res.status(200).sendFile(__dirname + "/public/auth.html")
+})
+
 app.post('/search', (req, res, next) => {
     console.log("received")
     console.log(req.body)
     spotify.getTopUser("/artists").then(
         (data) => console.log("Spotify:", data)
     )
-    events.getConcerts(new Date(req.body.start_date), new Date(req.body.end_date), [""], req.body.location).then(
+    const start_date = new Date(req.body.start_date)
+    start_date.setDate(start_date.getDate() + 1)
+    const end_date = new Date(req.body.end_date)
+    end_date.setDate(end_date.getDate() + 1)
+    events.getConcerts(start_date, end_date, [""], req.body.location).then(
         (data) => {
-            console.log(data)
-            const filtered_data = events.filterRadius(data, req.body.radius)
-            res.status(200).send(filtered_data)
+            res.status(200).send(splitCity(events.filterRadius(data, req.body.radius)))
             res.end()
         },
         () => {

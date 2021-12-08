@@ -34,11 +34,19 @@ function randomString (length) {
 
 /**
  * Return string of corresponding month number, assuming January is 0
+ * @param  {String}month
+ * @return {String}
  */
 function monthString_h(month) {
     return ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][month]
 }
 
+/**
+ * Return distance between 2 location strings
+ * @param {String}origin
+ * @param {String}event_location
+ * @returns {Promise<{distance: *, coords: *|number[]}>}
+ */
 function getDistance_h(origin, event_location) {
     return Promise.all([
         geocode(origin),
@@ -53,12 +61,28 @@ function getDistance_h(origin, event_location) {
     )
 }
 
-// export function filterCity(event_array, city)
+/**
+ * Takes in array of events and split them into buckets of cities
+ * @param {Object[]}event_array array of events
+ * @returns {Object} Object of cities with list of events in each city
+ */
+const splitCity_h = (event_array) => {
+    let result = {}
+    for(let i = 0; i < event_array.length; i++){
+        if(!(event_array[i].city in result)){
+            result[event_array[i].city] = [event_array[i]]
+        } else {
+            result[event_array[i].city].push(event_array[i])
+        }
+    }
+    return result
+}
 
 module.exports = {
     compareDate: compareDate_h,
     date_suffix: date_suffix_h,
     monthString: monthString_h,
     getDistance: getDistance_h,
-    generateRandomString: randomString
+    generateRandomString: randomString,
+    splitCity: splitCity_h
 }
