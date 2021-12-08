@@ -19,3 +19,11 @@ function addEvent(artist, date, city)
     var city = document.querySelectorAll('[city-name=' + city + ']')
     city.insertAdjacentHTML('beforeend', newEvent)
 }
+
+//slider bar
+// var distanceText = document.getElementById('radius-input')
+var distanceText = document.getElementById('radius-containter')
+var distanceSlider = document.getElementsByClassName('radius-slider')
+
+console.log("text-input: ", distanceText)
+console.log("slider-input", distanceSlider)
