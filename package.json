@@ -5,9 +5,28 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-handlebars": "^6.0.2",
-    "handlebars": "^4.7.7",
     "follow-redirects": "^1.14.5",
+    "handlebars": "^4.7.7",
     "node-html-parser": "^5.1.0",
     "request": "^2.88.2"
-  }
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "name": "final-project-beatmaps",
+  "description": "READ",
+  "version": "1.0.0",
+  "main": "events.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/osu-cs290-f21/final-project-beatmaps.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/osu-cs290-f21/final-project-beatmaps/issues"
+  },
+  "homepage": "https://github.com/osu-cs290-f21/final-project-beatmaps#readme"
 }

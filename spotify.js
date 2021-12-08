@@ -1,5 +1,6 @@
 const querystring = require("querystring")
 const request = require("request")
+const {generateRandomString} = require("./utility");
 
 const client_id = '3e8e08f448744d51bcfd558d6d461a17'; // Your client id
 const client_secret = '21d828a45c6041c0baa651c30e149c3e'; // Your secret
@@ -9,21 +10,6 @@ let access_token;
 let refresh_token;
 
 let authOptions;
-
-/**
- * Generates a random string containing numbers and letters
- * @param  {number} length The length of the string
- * @return {string} The generated string
- */
-const generateRandomString = function (length) {
-    let text = '';
-    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-    for (let i = 0; i < length; i++) {
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
-    }
-    return text;
-};
 
 const login_h = (req, res) => {
 
@@ -50,7 +36,7 @@ const getArtist_h = async (url) => {
     };
 
     // use the access token to access the Spotify Web API
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         request.get(options, function (error, response, body) {
             resolve(body)
         })

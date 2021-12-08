@@ -1,5 +1,44 @@
 {{#if needAuth}} 
 {{> authPage}}
 {{else}}
-{{> findEvent}}
+{{> search userInfo}}
+{{#if init}}
+{{else}}
+{{#each city}}
+    {{>city cities}}
+{{/each}}
+{{/if}}
+<section id="init-info">
+        <div id="user-info">
+            <img id="user-icon" src="{{photoURL}}">
+            <h3 class="user-name">{{userName}}</h3>
+        </div>
+        <div id="user-inputs">
+            <div id="location" class="text-input">
+                <p>where are you?</p>
+                <div>
+                    <input id="location-input" class="type-input" type="text" placeholder="city, town or zip">
+                </div>
+            </div>
+            <div id="time-frame" class="text-input">
+                <p>for how long?</p>
+                <div>
+                    <input id="time-start" class="type-input" type="date" placeholder="set a start">
+                    <input id="time-end" class="type-input" type="date" placeholder="sent an end">
+                </div>
+            </div>
+            <div id="radius" class="text-input">
+                <p>how far do you wanna drive?</p>
+                <div id="radius-containter">
+                    <input id="radius-input" class="type-input" type="text" value="50">
+                    <input class="radius-slider" type="range">
+                </div>
+            </div>
+            <div class="btn">
+                <a href="/findEvent">
+                    <button>SEARCH</button>
+                </a>
+            </div>
+        </div>
+    </section>
 {{/if}}

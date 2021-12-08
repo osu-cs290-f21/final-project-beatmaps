@@ -9,8 +9,7 @@ const app = express();
 
 app.engine('handlebars', exphbs.engine({ default: 'main'}))
 app.set('view engine', 'handlebars')
-
-app.use(express.static('public'));
+var cities
 
 //app.use(express.static(__dirname + '/public'))
 app.use(cors())
@@ -31,8 +30,15 @@ app.get('/callback', function (req, res) {
 });
 
 app.get('/findEvent', function (req, res) {
+    //var userInfo = getTopArtist()
+    userInfo = {
+        photoURL: 'broke.jpeg',
+        userName: 'ella'
+    }
     res.status(200).render('initPage.handlebars', {
-        needAuth: false
+        needAuth: false,
+        userInfo: userInfo,
+        cities: cities,
     })
 })
 
@@ -48,9 +54,8 @@ app.get('/topArtists', function () {
     )
 })
 
-app.get('*', (req, res) => {
-    res.status(404).sendFile('/public/404.html')
-})
+app.use(express.static('public'));
+
 
 console.log('Listening on 8888');
 app.listen(8888);
