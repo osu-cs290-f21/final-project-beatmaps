@@ -10,7 +10,7 @@ const app = express();
 app.engine('handlebars', exphbs.engine({ default: 'main'}))
 app.set('view engine', 'handlebars')
 
-//app.use(express.static('public'));
+app.use(express.static('public'));
 
 //app.use(express.static(__dirname + '/public'))
 app.use(cors())
