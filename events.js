@@ -59,6 +59,7 @@ const search_h = async (artist, location, date) => {
                                     duration: array[i].querySelector('.cEZxRc').innerText,
                                     location: destination,
                                     city: array[i].querySelectorAll('.cEZxRc.zvDXNd')[1].innerText,
+                                    artist: artist,
                                     path: options.path,
                                     coords: data.coords,
                                     distance: data.distance
@@ -130,6 +131,8 @@ const filterRadius_h = (event_array, radius) => {
     }
     return result_array
 }
+
+
 
 module.exports = {
     getConcerts: getConcerts_h,

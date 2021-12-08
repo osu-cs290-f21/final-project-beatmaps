@@ -28,7 +28,7 @@ const login_h = (req, res) => {
         }));
 }
 
-const getArtist_h = async (url) => {
+const getTopUser_h = async (url) => {
     const options = {
         url: 'https://api.spotify.com/v1/me/' + url,
         headers: {'Authorization': 'Bearer ' + access_token},
@@ -80,7 +80,7 @@ const auth_h = (req, res) => {
             refresh_token = body.refresh_token;
 
             // we can also pass the token to the browser to make requests from there
-            res.redirect('/findEvent');
+            res.redirect('/get-info.html');
         } else {
             res.redirect('/failed');
         }
@@ -115,5 +115,5 @@ module.exports = {
     auth: auth_h,
     login: login_h,
     refresh_token: refresh_token_h,
-    getTopArtist: getArtist_h
+    getTopUser: getTopUser_h
 }

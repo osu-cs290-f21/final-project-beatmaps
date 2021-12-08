@@ -17,6 +17,9 @@ app.use(express.static('public'))
 app.post('/search', (req, res, next) => {
     console.log("received")
     console.log(req.body)
+    spotify.getTopUser("/artists").then(
+        (data) => console.log("Spotify:", data)
+    )
     events.getConcerts(new Date(req.body.start_date), new Date(req.body.end_date), [""], req.body.location).then(
         (data) => {
             console.log(data)
@@ -47,6 +50,6 @@ app.get('*', (req, res) => {
     res.status(404).sendFile('/public/404.html')
 })
 
-app.listen(3000,
-    () => console.log("Listening 3000")
+app.listen(8888,
+    () => console.log("Listening 8888")
 )
