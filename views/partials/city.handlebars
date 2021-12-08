@@ -1,4 +1,6 @@
 <div class="city" city-name={{city}} >
     <h2 class="city-name">{{city}}</h2>
-
+    {{#each events}}
+        {{>event events}}
+    {{/each}}
 </div>
