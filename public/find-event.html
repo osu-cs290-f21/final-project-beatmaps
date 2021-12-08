@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+
+<header>
+    <title>beatmaps</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="style.css" rel="stylesheet">
+    <!-- Adobe type kit: domus titling and sofio-pro -->
+    <link href="https://use.typekit.net/fjg0ajy.css" rel="stylesheet">
+    <script src="./index.js" charset="utf-8" defer></script>
+</header>
+
+<body>
+    <div class="nav">
+        <img src="images/beatmap-logo.svg">
+    </div>
+    <section id="find-event">
+        <div id="map-section">
+            <div id="map">
+                <img src="images/map-moc.png">
+            </div>
+            <div id="map-filters">
+                <div id="location-container" class="text-input">
+                    <p>where are you?</p>
+                    <div>
+                        <input id="location-input" class="type-input" type="text" placeholder="city, town or zip">
+                    </div>
+                </div>
+                <div id="time-frame" class="text-input">
+                    <p>for how long?</p>
+                    <div>
+                        <input id="time-start" class="type-input" type="date" placeholder="set a start">
+                        <input id="time-end" class="type-input" type="date" placeholder="sent an end">
+                    </div>
+                </div>
+                <div id="radius" class="text-input">
+                    <p>how far do you wanna drive?</p>
+                    <div id="radius-containter">
+                        <input id="radius-input" class="type-input" type="text" value="50">
+                        <input class="radius-slider" type="range">
+                    </div>
+                </div>
+                <!-- <div class="search-btn">
+                    <a href="find-event.html">
+                        <button>SEARCH</button>
+                    </a>
+                </div> -->
+            </div>
+        </div>
+            <!-- <div id="shadow-top"> </div> -->
+            <div id="results-section">
+                <div class="city">
+                    <h2 class="city-name">PORTLAND</h2>
+                    <div class="search-results">
+                        <h3 class="artist-name">Artist Name</h3>
+                        <h4 class="event-date">- Date</h4>
+                    </div>
+                    <div class="search-results search-clicked">
+                        <h3 class="artist-name">Artist Name</h3>
+                        <h4 class="event-date">- Date</h4>
+                    </div>
+                    <div class="search-results">
+                        <h3 class="artist-name">Artist Name</h3>
+                        <h4 class="event-date">- Date</h4>
+                    </div>
+                    <div class="search-results">
+                        <h3 class="artist-name">Artist Name</h3>
+                        <h4 class="event-date">- Date</h4>
+                    </div>
+                    <div class="search-results">
+                        <h3 class="artist-name">Artist Name</h3>
+                        <h4 class="event-date">- Date</h4>
+                    </div>
+                    <div class="search-results">
+                        <h3 class="artist-name">Artist Name</h3>
+                        <h4 class="event-date">- Date</h4>
+                    </div>
+                    <div class="search-results">
+                        <h3 class="artist-name">Artist Name</h3>
+                        <h4 class="event-date">- Date</h4>
+                    </div>
+                </div>
+                <div class="city">
+                    <h2 class="city-name">PORTLAND</h2>
+                    <div class="search-results">
+                        <h3 class="artist-name">Artist Name</h3>
+                        <h4 class="event-date">- Date</h4>
+                    </div>
+                    <div class="search-results">
+                        <h3 class="artist-name">Artist Name</h3>
+                        <h4 class="event-date">- Date</h4>
+                    </div>
+                    <div class="search-results">
+                        <h3 class="artist-name">Artist Name</h3>
+                        <h4 class="event-date">- Date</h4>
+                    </div>
+                    <div class="search-results">
+                        <h3 class="artist-name">Artist Name</h3>
+                        <h4 class="event-date">- Date</h4>
+                    </div>
+                    <div class="search-results">
+                        <h3 class="artist-name">Artist Name</h3>
+                        <h4 class="event-date">- Date</h4>
+                    </div>
+                    <div class="search-results">
+                        <h3 class="artist-name">Artist Name</h3>
+                        <h4 class="event-date">- Date</h4>
+                    </div>
+                    <div class="search-results">
+                        <h3 class="artist-name">Artist Name</h3>
+                        <h4 class="event-date">- Date</h4>
+                    </div>
+                </div>
+                <class class="city">
+                    <h2 class="city-name">PORTLAND</h2>
+                    <div class="search-results">
+                        <h3 class="artist-name">Artist Name</h3>
+                        <h4 class="event-date">- Date</h4>
+                    </div>
+                    <div class="search-results">
+                        <h3 class="artist-name">Artist Name</h3>
+                        <h4 class="event-date">- Date</h4>
+                    </div>
+                    <div class="search-results">
+                        <h3 class="artist-name">Artist Name</h3>
+                        <h4 class="event-date">- Date</h4>
+                    </div>
+                    <div class="search-results">
+                        <h3 class="artist-name">Artist Name</h3>
+                        <h4 class="event-date">- Date</h4>
+                    </div>
+                    <div class="search-results">
+                        <h3 class="artist-name">Artist Name</h3>
+                        <h4 class="event-date">- Date</h4>
+                    </div>
+                    <div class="search-results">
+                        <h3 class="artist-name">Artist Name</h3>
+                        <h4 class="event-date">- Date</h4>
+                    </div>
+                    <div class="search-results">
+                        <h3 class="artist-name">Artist Name</h3>
+                        <h4 class="event-date">- Date</h4>
+                    </div>
+                </class>
+            </div>
+            <!-- <div id="shadow-bottom">a</div> -->
+        </div>
+        <div id="event-section">
+            <div class="selected-event">
+                <div id="artist-icon">
+                    <img src="images/clement-pfp.png">
+                </div>
+                <h1 id="artist-name">Artist Name</h1>
+                <div id="location-date">
+                    <h3 id="concert-location">Location</h3>
+                    <h3 id="concert-date">- Date</h3>
+                </div>
+                <p id="concert-description">hey omg look I'm a paragraph explaning some bs about a convert please end me. I am so tired of this rn plz send help.</p>
+                <div class="search-btn">
+                    <a href="find-event.html">
+                        <button>TICKETS</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>    
+</body>
