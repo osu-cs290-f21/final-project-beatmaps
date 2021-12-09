@@ -56,12 +56,12 @@ window.initMap = function () {
     let markers = []
     searchResultPromise.then(
         (data) => {
-            console.log(data)
-            for (let i = 0; i < data.length; i++) {
+            console.log("prmosie",data)
+            for (let i = 0; i < events.length; i++) {
                 markers.push({
                         "data": data[i],
                         "marker": new google.maps.Marker({
-                            position: {lat: data[i].coords[1], lng: data[i].coords[0]},
+                            position: {lat: events[i].coords[1], lng: events[i].coords[0]},
                             map: map,
                         })
                     }
