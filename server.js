@@ -42,11 +42,12 @@ app.get('/findEvent', function (req, res) {
     )
 })
 
-app.get('/result', (req, res)=>{
+app.get('/result', (req, res) => {
     searchResultPromise.then(
-        ()=>{
+        () => {
             let context = {city: splitCity(searchResult)}
-    res.status(200).render('results', context)}
+            res.status(200).render('results', context)
+        }
     )
 })
 
@@ -119,7 +120,6 @@ app.get('/refresh_token', function (req, res) {
 app.get('/topArtists', (req, res) => {
     spotify.getCurrentUser("/top/artists?limit=10").then(
         (data) => {
-            console.log(data)
             artist_list = data.items.map(
                 (objects) => {
                     return {
