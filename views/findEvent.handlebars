@@ -1,6 +1,8 @@
-{{> search user}}
-{{#unless init}}
-    {{#each city}}
-        {{>city}}
-    {{/each}}
-{{/unless}}
+{{log "findEvent"}}
+{{log this}}
+
+{{#if result}}
+    {{>results city}}
+{{else}}
+    {{>search user}}
+{{/if}}
