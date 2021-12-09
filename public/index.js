@@ -6,10 +6,11 @@ script.async = true;
 let map;
 let events;
 let circleRadius;
+let searchResultPromise
 
 // Attach your callback function to the `window` object
 window.initMap = function () {
-    let searchResultPromise = $.get("/searchGetResult", (data) => {
+    searchResultPromise = $.get("/searchGetResult", (data) => {
         console.log("get result:", data)
         events = data
         return data
@@ -79,10 +80,10 @@ document.head.appendChild(script);
 document.onreadystatechange = () => {
     if(window.location.pathname !== '/result') {
         if (document.readyState === 'complete') {
-            var distanceText = document.getElementById('radius-input')
-            var distanceSlider = document.getElementsByClassName('radius-slider')
+            const distanceText = document.getElementById('radius-input');
+            const distanceSlider = document.getElementsByClassName('radius-slider');
 
-            var distanceValue = 75
+            let distanceValue = 75;
 
             distanceText.addEventListener('change', function () {
                 distanceValue = distanceValidation(parseInt(distanceText.value), distanceValue)
@@ -105,19 +106,37 @@ document.onreadystatechange = () => {
             })
         })
     } else {
-        const events_html = document.getElementsByClassName('search-results')
-        for (let i = 0; i < events.length; i++) {
-            console.log("in loop", i)
-            events_html[i].addEventListener("click",
-                () => {
-                    console.log("clocked event number", i)
-                    const template = Handlebars.templates.event_details(events[i])
-                    if (document.getElementById('event-section') !== null) {
-                        document.getElementById('event-section').remove()
-                    }
-                    document.getElementById('find-event').insertAdjacentHTML('beforeend', template)
+        searchResultPromise.then(
+            ()=>{
+                const events_html = document.getElementsByClassName('search-results')
+                console.log("in else:", events_html)
+                console.log(events.length)
+                for (let i = 0; i < events.length; i++) {
+                    console.log("in loop", i)
+                    events_html[i].addEventListener("click",
+                        () => {
+                            console.log("clocked event number", i)
+                            const template = Handlebars.templates.event_details(events[i])
+                            if (document.getElementById('event-section') !== null) {
+                                document.getElementById('event-section').remove()
+                            }
+                            document.getElementById('find-event').insertAdjacentHTML('beforeend', template)
+                        }
+                    )
                 }
-            )
+            }
+        )
+
+        searchResults = document.getElementsByClassName('search-results')
+
+        for(let i = 0; i < searchResults.length; i++){
+            searchResults[i].addEventListener('click', function(){
+                console.log("clocked")
+                for(let j = 0; j < searchResults.length; j++){
+                    searchResults[j].classList.remove('search-clicked')
+                }
+                searchResults[i].classList.add('search-clicked')
+            })
         }
     }
 };
@@ -135,14 +154,3 @@ Handlebars.registerHelper("log", function(something) {
 });
 
 // event selection
-
-searchResults = document.getElementsByClassName('search-results')
-
-for(let i = 0; i < searchResults.length; i++){
-    searchResults[i].addEventListener('click', function(){
-        for(let j = 0; j < searchResults.length; j++){
-            searchResults[j].classList.remove('search-clicked')
-        }
-        searchResults[i].classList.add('search-clicked')
-    })
-}
