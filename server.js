@@ -64,7 +64,7 @@ app.post('/search', async (req, res, next) => {
         (data) => {
             searchResult = data
             console.log("done search")
-            res.status(200).redirect('/findEvent')
+            res.status(200).redirect('/diffPath')
         },
         () => {
             next()
@@ -132,6 +132,19 @@ app.get('/topArtists', (req, res) => {
     )
     res.redirect("/findEvent")
 })
+
+
+app.get('diffPath', function (req, res) {
+    res.status(200).render('findEvent.handlebars', {
+        init: false,
+        user: {
+            display_name: 'ella',
+            display_url: 'url'
+        },
+        city: {'element': 123}
+    })
+})
+
 
 app.get('*', (req, res) => {
     res.status(404).sendFile(__dirname + '/public/404.html')
