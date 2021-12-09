@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "build": "handlebars ./views/partials/event_details.handlebars -f ./public/event_details.js"
+  },
   "dependencies": {
     "axios": "^0.24.0",
     "body-parser": "^1.19.0",

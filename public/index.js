@@ -56,7 +56,7 @@ window.initMap = function () {
     let markers = []
     searchResultPromise.then(
         (data) => {
-            console.log("prmosie",data)
+            console.log("prmosie", data)
             for (let i = 0; i < events.length; i++) {
                 markers.push({
                         "data": data[i],
@@ -77,33 +77,49 @@ document.head.appendChild(script);
 
 //slider bar
 document.onreadystatechange = () => {
-    if (document.readyState === 'complete') {
-        var distanceText = document.getElementById('radius-input')
-        var distanceSlider = document.getElementsByClassName('radius-slider')
+    if(window.location.pathname !== '/result') {
+        if (document.readyState === 'complete') {
+            var distanceText = document.getElementById('radius-input')
+            var distanceSlider = document.getElementsByClassName('radius-slider')
 
-        var distanceValue = 75
+            var distanceValue = 75
 
-        distanceText.addEventListener('change', function () {
-            distanceValue = distanceValidation(parseInt(distanceText.value), distanceValue)
-            distanceSlider[0].value = distanceValue
+            distanceText.addEventListener('change', function () {
+                distanceValue = distanceValidation(parseInt(distanceText.value), distanceValue)
+                distanceSlider[0].value = distanceValue
+            })
+
+            distanceSlider[0].addEventListener('input', function () {
+                distanceValue = distanceValidation(parseInt(distanceSlider[0].value), distanceValue)
+                distanceText.value = distanceValue
+            })
+        }
+
+        document.getElementById("search_button").addEventListener("click", () => {
+            console.log("Searching")
+            $.post("/search", {
+                location: document.getElementById("location-input").value,
+                start_date: document.getElementById("time-start").value,
+                end_date: document.getElementById("time-end").value,
+                radius: parseInt(document.getElementsByClassName("radius-slider")[0].value)
+            })
         })
-
-        distanceSlider[0].addEventListener('input', function () {
-            distanceValue = distanceValidation(parseInt(distanceSlider[0].value), distanceValue)
-            distanceText.value = distanceValue
-        })
+    } else {
+        const events_html = document.getElementsByClassName('search-results')
+        for (let i = 0; i < events.length; i++) {
+            console.log("in loop", i)
+            events_html[i].addEventListener("click",
+                () => {
+                    console.log("clocked event number", i)
+                    const template = Handlebars.templates.event_details(events[i])
+                    if (document.getElementById('event-section') !== null) {
+                        document.getElementById('event-section').remove()
+                    }
+                    document.getElementById('find-event').insertAdjacentHTML('beforeend', template)
+                }
+            )
+        }
     }
-
-    document.getElementById("search_button").addEventListener("click", () => {
-        console.log("Searching")
-        $.post("/search", {
-            location: document.getElementById("location-input").value,
-            start_date: document.getElementById("time-start").value,
-            end_date: document.getElementById("time-end").value,
-            radius: parseInt(document.getElementsByClassName("radius-slider")[0].value)
-        })
-    })
-
 };
 
 function distanceValidation(x, last) {
@@ -114,6 +130,6 @@ function distanceValidation(x, last) {
     }
 }
 
-Handlebars.registerHelper("log", function(something) {
+Handlebars.registerHelper("log", function (something) {
     console.log(something);
 });
