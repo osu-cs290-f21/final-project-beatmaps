@@ -114,6 +114,20 @@ function distanceValidation(x, last) {
     }
 }
 
-Handlebars.registerHelper("log", function(something) {
-    console.log(something);
-});
+// Handlebars.registerHelper("log", function(something) {
+//     console.log(something);
+// });
+
+// event selection
+
+searchResults = document.getElementsByClassName('search-results')
+
+for(let i = 0; i < searchResults.length; i++){
+    searchResults[i].addEventListener('click', function(){
+        for(let j = 0; j < searchResults.length; j++){
+            searchResults[j].classList.remove('search-clicked')
+        }
+        searchResults[i].classList.add('search-clicked')
+    })
+}
+
