@@ -1,16 +1,8 @@
-{{> search user}}
-{{#unless init}}
+{{log "findEvent"}}
+{{log this}}
 
-{{#if results}}
- <section id="find-event">
-    <section id='results'>
-        <div id="results-section">
-            {{#each city}}
-                {{>city}}
-            {{/each}}
-        </div>
-    </section>
-</section>
+{{#if result}}
+    {{>results city}}
 {{else}}
+    {{>search user}}
 {{/if}}
-{{/unless}}

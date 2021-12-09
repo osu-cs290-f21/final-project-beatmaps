@@ -32,8 +32,7 @@ app.get('/', function (req, res) {
 app.get('/findEvent', function (req, res) {
     spotify.getCurrentUser("").then(
         data => {
-            console.log({
-                init: userInput === undefined,
+            console.log("in Find Event Server.js:",{
                 user: {
                     display_name: data.display_name,
                     display_url: data.images[0].url
@@ -41,12 +40,12 @@ app.get('/findEvent', function (req, res) {
                 cities: splitCity(searchResult)
             })
             res.status(200).render('findEvent.handlebars', {
-                init: userInput === undefined,
                 user: {
                     display_name: data.display_name,
                     display_url: data.images[0].url
                 },
-                city: splitCity(searchResult)
+                city: splitCity(searchResult),
+                result: userInput !== undefined
             })
         }
     )
