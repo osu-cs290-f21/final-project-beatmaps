@@ -49,7 +49,7 @@ const search_h = async (artist, location, date) => {
                 for (let i = 0; i < array.length; i++) {
                     const destination = array[i].querySelector('.cEZxRc.zvDXNd').innerText
                     const city = array[i].querySelectorAll('.cEZxRc.zvDXNd')[1].innerText
-                    promise_array.push(utility.getDistance(location, destination + ' ' +city.split(' ')[1]).then(
+                    promise_array.push(utility.getDistance(location, destination + ' ' + city.split(' ')[1]).then(
                         data => {
                             if (data.coords[0] !== data.coords[1] && data.coords[0])
                                 result_array.push({
@@ -124,8 +124,8 @@ const getConcerts_h = async (start_date, end_date, artists, location) => {
  */
 const filterRadius_h = (event_array, radius) => {
     let result_array = []
-    for(let i = 0; i < event_array.length; i++){
-        if(event_array[i].distance <= radius){
+    for (let i = 0; i < event_array.length; i++) {
+        if (event_array[i].distance <= radius) {
             result_array.push(event_array[i])
         }
     }
