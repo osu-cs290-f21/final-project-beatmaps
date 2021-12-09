@@ -45,7 +45,7 @@ app.get('/findEvent', function (req, res) {
 app.get('/result', (req, res)=>{
     searchResultPromise.then(
         ()=>{
-    context = {city: splitCity(searchResult)}
+            let context = {city: splitCity(searchResult)}
     res.status(200).render('results', context)}
     )
 })
