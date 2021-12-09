@@ -7,16 +7,20 @@ let cache = {}
 
 const geocode_h = async (query) => {
     const options = {
-        query: query + " OR",
+        query: query,
         within_country: 'USA',
         limit: '1'
     }
     if (options.query in cache) {
+        console.log("returning cached query", options.query, cache[options.query])
         return cache[options.query]
     } else {
         return geocoding(options).then(
             (data) => {
+                console.log("Current query", options.query)
+                console.log("geocoded data:", data.features[0].geometry.coordinates)
                 cache[options.query] = data.features[0].geometry.coordinates
+                console.log("Current cache:", cache)
                 return cache[options.query]
             }
         ).catch(() => {

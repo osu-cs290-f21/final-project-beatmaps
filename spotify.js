@@ -30,7 +30,7 @@ const login_h = (req, res) => {
 
 const getTopUser_h = async (url) => {
     const options = {
-        url: 'https://api.spotify.com/v1/me/' + url,
+        url: 'https://api.spotify.com/v1/me' + url,
         headers: {'Authorization': 'Bearer ' + access_token},
         json: true
     };
@@ -80,7 +80,7 @@ const auth_h = (req, res) => {
             refresh_token = body.refresh_token;
 
             // we can also pass the token to the browser to make requests from there
-            res.redirect('/get-info.html');
+            res.redirect('/topArtists');
         } else {
             res.redirect('/failed');
         }

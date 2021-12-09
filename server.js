@@ -5,6 +5,12 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const bodyParser = require('body-parser');
 const {splitCity} = require("./utility");
+const {geocode} = require("./maps")
+
+let searchResult = {}
+let userInput
+let searchResultPromise;
+let artist_list;
 
 const app = express()
 
@@ -15,27 +21,57 @@ app.use(express.static(__dirname + '/public'))
 
 app.use(express.static('public'))
 
-app.get('/', (req, res)=>{
+app.get('/', (req, res) => {
     res.status(200).sendFile(__dirname + "/public/auth.html")
 })
 
-app.post('/search', (req, res, next) => {
-    console.log("received")
-    console.log(req.body)
-    spotify.getTopUser("/artists").then(
-        (data) => console.log("Spotify:", data)
-    )
-    const start_date = new Date(req.body.start_date)
+app.post('/search', async (req, res, next) => {
+    userInput = req.body
+
+    const start_date = new Date(userInput.start_date)
     start_date.setDate(start_date.getDate() + 1)
-    const end_date = new Date(req.body.end_date)
+    const end_date = new Date(userInput.end_date)
     end_date.setDate(end_date.getDate() + 1)
-    events.getConcerts(start_date, end_date, [""], req.body.location).then(
+
+    searchResultPromise = events.getConcerts(start_date, end_date, artist_list, userInput.location).then(
         (data) => {
-            res.status(200).send(splitCity(events.filterRadius(data, req.body.radius)))
-            res.end()
+            searchResult = data
+            console.log("done search")
+            res.status(204).end()
         },
         () => {
             next()
+        }
+    )
+})
+
+app.get('/searchSplitCity', (req, res) => {
+    searchResultPromise.then(
+        () => {
+            const result = splitCity(searchResult)
+            res.status(200).send(result)
+            res.end()
+        }
+    )
+})
+
+app.get('/searchGetResult', (req, res) => {
+    searchResultPromise.then(
+        () => {
+            res.status(200).send(searchResult)
+            res.end()
+        }
+    )
+})
+
+app.get('/userCoords', (req, res) => {
+    geocode(userInput.location).then(
+        data => {
+            res.status(200).send({
+                coords: data,
+                radius: userInput.radius
+            })
+            res.end()
         }
     )
 })
@@ -53,8 +89,24 @@ app.get('/refresh_token', function (req, res) {
     spotify.refresh_token(req, res)
 });
 
+app.get('/topArtists', (req, res) => {
+    spotify.getTopUser("/top/artists").then(
+        (data) => {
+            artist_list = data.items.map(
+                (objects) => {
+                    return {
+                        "name": objects.name,
+                        "picture": objects.images[0].url
+                    }
+                }
+            )
+        }
+    )
+    res.redirect("/get-info.html")
+})
+
 app.get('*', (req, res) => {
-    res.status(404).sendFile('/public/404.html')
+    res.status(404).sendFile(__dirname + '/public/404.html')
 })
 
 app.listen(8888,

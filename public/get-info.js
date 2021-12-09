@@ -4,7 +4,9 @@ document.getElementById("search_button").addEventListener("click", () => {
         start_date: document.getElementById("time-start").value,
         end_date: document.getElementById("time-end").value,
         radius: 200//document.getElementsByClassName("radius-slider")[0].value
-    }, (data) => {
-        console.log("result", data)
+    }, () => {
+        $.get('searchSplitCity', (data)=>{
+            console.log("Data:", data)
+        })
     })
 })

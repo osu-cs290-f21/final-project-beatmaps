@@ -10,6 +10,28 @@ function compareDate_h(a, b) {
 }
 
 /**
+ * return if 2 events are "likely" to be the same by comparing the start date, title, duration and location
+ * @param {Object}value
+ * @param {number}index
+ * @param {Object[]}self
+ * @returns {boolean}
+ */
+function unique_h(value, index, self) {
+    for (let i = index + 1; i < self.length; i++) {
+        if (
+            self[i].date === value.date &&
+            self[i].month === value.month &&
+            self[i].title === value.title &&
+            self[i].duration === value.duration &&
+            self[i].location === value.location
+        ) {
+            return false
+        }
+    }
+    return true
+}
+
+/**
  * Return the suffix of the day of the month ("st", "nd", etc.)
  */
 function date_suffix_h(date) {
@@ -22,7 +44,7 @@ function date_suffix_h(date) {
  * @param  {number} length The length of the string
  * @return {string} The generated string
  */
-function randomString (length) {
+function randomString(length) {
     let text = '';
     const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
@@ -34,7 +56,7 @@ function randomString (length) {
 
 /**
  * Return string of corresponding month number, assuming January is 0
- * @param  {String}month
+ * @param  {number}month
  * @return {String}
  */
 function monthString_h(month) {
@@ -48,9 +70,11 @@ function monthString_h(month) {
  * @returns {Promise<{distance: *, coords: *|number[]}>}
  */
 function getDistance_h(origin, event_location) {
+    // console.log("Full event location:", event_location)
+    // console.log("Split event location:", event_location.split(", ").slice(1).join(' '))
     return Promise.all([
         geocode(origin),
-        geocode(event_location.split(", ").at(-1))
+        geocode(event_location.split(", ").slice(1).join(' '))
     ]).then(
         (data) => {
             return {
@@ -68,8 +92,8 @@ function getDistance_h(origin, event_location) {
  */
 const splitCity_h = (event_array) => {
     let result = {}
-    for(let i = 0; i < event_array.length; i++){
-        if(!(event_array[i].city in result)){
+    for (let i = 0; i < event_array.length; i++) {
+        if (!(event_array[i].city in result)) {
             result[event_array[i].city] = [event_array[i]]
         } else {
             result[event_array[i].city].push(event_array[i])
@@ -84,5 +108,6 @@ module.exports = {
     monthString: monthString_h,
     getDistance: getDistance_h,
     generateRandomString: randomString,
-    splitCity: splitCity_h
+    splitCity: splitCity_h,
+    unique: unique_h
 }

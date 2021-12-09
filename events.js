@@ -1,7 +1,6 @@
 const {https} = require('follow-redirects');
 const {parse} = require('node-html-parser');
 const utility = require("./utility")
-const {getDistance} = require("./utility");
 const {geocode} = require("./maps");
 /**
  * Limit number to a range
@@ -12,19 +11,19 @@ Number.prototype.clamp = function (min, max) {
 
 /**
  * Send a search query to Google with a templated search string, return a list of about 10 events according to inputs
- * @param {string}artist Artist to search for
+ * @param {Object}artist Artist to search for
  * @param {string}location Location to search around
  * @param {string}date date string to search around
  * @returns {Promise<Object[]>} List of events
  */
 const search_h = async (artist, location, date) => {
 
-    artist = artist.replace(" ", "+")
+    artist.name = artist.name.replace(" ", "+")
     date = date.replace(" ", "+")
 
     const options = {
         host: "google.com",
-        path: "/search?q=" + artist + "+concert+" + location.replace(" ", "+") + "+on+" + date + "&oq=concerts" + "&ibp=htl;events",
+        path: "/search?q=" + artist.name + "+concert+" + location.replace(" ", "+") + "+on+" + date + "&oq=concerts" + "&ibp=htl;events",
         method: 'GET',
         headers: {
             'Content-Type': 'text/html',
@@ -49,7 +48,8 @@ const search_h = async (artist, location, date) => {
 
                 for (let i = 0; i < array.length; i++) {
                     const destination = array[i].querySelector('.cEZxRc.zvDXNd').innerText
-                    promise_array.push(getDistance(location, destination).then(
+                    const city = array[i].querySelectorAll('.cEZxRc.zvDXNd')[1].innerText
+                    promise_array.push(utility.getDistance(location, destination + ' ' +city.split(' ')[1]).then(
                         data => {
                             if (data.coords[0] !== data.coords[1] && data.coords[0])
                                 result_array.push({
@@ -58,8 +58,9 @@ const search_h = async (artist, location, date) => {
                                     title: array[i].querySelector('.YOGjf').innerText,
                                     duration: array[i].querySelector('.cEZxRc').innerText,
                                     location: destination,
-                                    city: array[i].querySelectorAll('.cEZxRc.zvDXNd')[1].innerText,
-                                    artist: artist,
+                                    city: city,
+                                    artist: artist.name,
+                                    artist_picture: artist.picture,
                                     path: options.path,
                                     coords: data.coords,
                                     distance: data.distance
@@ -69,7 +70,6 @@ const search_h = async (artist, location, date) => {
                 }
 
                 resolve(Promise.all(promise_array).then(() => {
-                    console.log(result_array)
                     return result_array
                 }))
             })
@@ -86,14 +86,14 @@ const search_h = async (artist, location, date) => {
  * Get events by requesting the events page from Google and parsing the HTML
  * @param {Date}start_date The start date of your search range (type Date)
  * @param {Date}end_date The end date of your search range(type Date)
- * @param {String[]}artists The artists that you want to loop through (type Array)
+ * @param {Object[]}artists The artists that you want to loop through (type Array)
  * @param {String}location The location that you want to search around (type String)
  * @returns {Promise<Object[]>} List of event Objects
  */
 const getConcerts_h = async (start_date, end_date, artists, location) => {
     let current_event_list = [];
     let promise_list = [];
-    await geocode(location)
+    await geocode(location) //to cache input location
     for (let i = start_date; i <= end_date; i.setDate(i.getDate() + 1)) { //loop through date
         const date_string = `${utility.monthString(i.getMonth())} ${i.getDate()}${utility.date_suffix(i.getDate())}` //construct string of date "[Month] [Date][Date suffix]"
 
@@ -111,7 +111,7 @@ const getConcerts_h = async (start_date, end_date, artists, location) => {
     }
     return Promise.all(promise_list).then(
         () => {
-            return [...new Map(current_event_list.map(v => [JSON.stringify(v), v])).values()].sort(utility.compareDate)
+            return current_event_list.filter(utility.unique).sort(utility.compareDate)
         }
     )
 }
