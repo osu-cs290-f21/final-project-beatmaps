@@ -12,6 +12,7 @@ let searchResult = {}
 let userInput;
 let searchResultPromise;
 let artist_list;
+let userData;
 
 const app = express()
 
@@ -32,23 +33,17 @@ app.get('/', function (req, res) {
 app.get('/findEvent', function (req, res) {
     spotify.getCurrentUser("").then(
         data => {
-            console.log("in Find Event Server.js:",{
-                user: {
-                    display_name: data.display_name,
-                    display_url: data.images[0].url
-                },
-                cities: splitCity(searchResult)
-            })
-            res.status(200).render('findEvent.handlebars', {
-                user: {
-                    display_name: data.display_name,
-                    display_url: data.images[0].url
-                },
-                city: splitCity(searchResult),
-                result: userInput !== undefined
+            userData = data
+            res.status(200).render('search.handlebars', {
+                display_name: data.display_name,
+                display_url: data.images[0].url
             })
         }
     )
+})
+
+app.get('/result', (req, res)=>{
+    res.status(200).render('results', splitCity(searchResult))
 })
 
 app.post('/search', async (req, res, next) => {
@@ -64,7 +59,7 @@ app.post('/search', async (req, res, next) => {
         (data) => {
             searchResult = data
             console.log("done search")
-            res.status(200).redirect('/diffPath')
+            res.status(204).end()
         },
         () => {
             next()
@@ -132,19 +127,6 @@ app.get('/topArtists', (req, res) => {
     )
     res.redirect("/findEvent")
 })
-
-
-app.get('diffPath', function (req, res) {
-    res.status(200).render('findEvent.handlebars', {
-        init: false,
-        user: {
-            display_name: 'ella',
-            display_url: 'url'
-        },
-        city: {'element': 123}
-    })
-})
-
 
 app.get('*', (req, res) => {
     res.status(404).sendFile(__dirname + '/public/404.html')
