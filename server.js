@@ -65,7 +65,7 @@ app.post('/search', async (req, res, next) => {
         (data) => {
             searchResult = data
             console.log("done search")
-            res.status(200).redirect('/findEvent')
+            res.status(200).redirect('/diffPath')
         },
         () => {
             next()
@@ -118,8 +118,9 @@ app.get('/refresh_token', function (req, res) {
 });
 
 app.get('/topArtists', (req, res) => {
-    spotify.getCurrentUser("/top/artists").then(
+    spotify.getCurrentUser("/top/artists?limit=10").then(
         (data) => {
+            console.log(data)
             artist_list = data.items.map(
                 (objects) => {
                     return {
@@ -132,6 +133,19 @@ app.get('/topArtists', (req, res) => {
     )
     res.redirect("/findEvent")
 })
+
+
+app.get('diffPath', function (req, res) {
+    res.status(200).render('findEvent.handlebars', {
+        init: false,
+        user: {
+            display_name: 'ella',
+            display_url: 'url'
+        },
+        city: {'element': 123}
+    })
+})
+
 
 app.get('*', (req, res) => {
     res.status(404).sendFile(__dirname + '/public/404.html')
