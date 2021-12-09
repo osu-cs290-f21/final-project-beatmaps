@@ -7,18 +7,11 @@ let map;
 let events;
 let circleRadius;
 let searchResultPromise
+let coordsPromise;
 
 // Attach your callback function to the `window` object
 window.initMap = function () {
-    searchResultPromise = $.get("/searchGetResult", (data) => {
-        console.log("get result:", data)
-        events = data
-        return data
-    })
-
-    let coordsPromise = $.get("/userCoords", (data) => {
-        return data
-    })
+    updatePage()
 
     let slider = document.getElementById("radius-slider")
     coordsPromise.then(
@@ -78,6 +71,20 @@ document.head.appendChild(script);
 
 //slider bar
 document.onreadystatechange = () => {
+    document.getElementById("search_button").addEventListener("click", () => {
+        console.log("Searching")
+        $.post("/search", {
+            location: document.getElementById("location-input").value,
+            start_date: document.getElementById("time-start").value,
+            end_date: document.getElementById("time-end").value,
+            radius: parseInt(document.getElementsByClassName("radius-slider")[0].value)
+        }).then(
+            ()=> {
+                if (window.location.pathname === '/result')
+                    updatePage()
+            }
+        )
+    })
     if(window.location.pathname !== '/result') {
         if (document.readyState === 'complete') {
             const distanceText = document.getElementById('radius-input');
@@ -96,15 +103,6 @@ document.onreadystatechange = () => {
             })
         }
 
-        document.getElementById("search_button").addEventListener("click", () => {
-            console.log("Searching")
-            $.post("/search", {
-                location: document.getElementById("location-input").value,
-                start_date: document.getElementById("time-start").value,
-                end_date: document.getElementById("time-end").value,
-                radius: parseInt(document.getElementsByClassName("radius-slider")[0].value)
-            })
-        })
     } else {
         searchResultPromise.then(
             ()=>{
@@ -127,7 +125,7 @@ document.onreadystatechange = () => {
             }
         )
 
-        searchResults = document.getElementsByClassName('search-results')
+        const searchResults = document.getElementsByClassName('search-results')
 
         for(let i = 0; i < searchResults.length; i++){
             searchResults[i].addEventListener('click', function(){
@@ -152,5 +150,18 @@ function distanceValidation(x, last) {
 Handlebars.registerHelper("log", function(something) {
     console.log(something);
 });
+
+function updatePage(){
+    searchResultPromise = $.get("/searchGetResult", (data) => {
+        console.log("get result:", data)
+        events = data
+        return data
+    })
+    coordsPromise = $.get("/userCoords", (data) => {
+        // map.setCenter({lat: data.coords[1], lng: data.coords[0]})
+        // circleRadius.setCenter({lat: data.coords[1], lng: data.coords[0]})
+        return data
+    })
+}
 
 // event selection

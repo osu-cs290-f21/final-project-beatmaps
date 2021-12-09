@@ -52,7 +52,7 @@ app.get('/result', (req, res) => {
 })
 
 app.post('/search', async (req, res, next) => {
-    console.log("in search")
+    console.log("in search", req.body)
     userInput = req.body
 
     const start_date = new Date(userInput.start_date)
@@ -85,7 +85,6 @@ app.get('/searchSplitCity', (req, res) => {
 app.get('/searchGetResult', (req, res) => {
     searchResultPromise.then(
         () => {
-            console.log("Getting results", searchResult)
             res.status(200).send(searchResult)
             res.end()
         }
