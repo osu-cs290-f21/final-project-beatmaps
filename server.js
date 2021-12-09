@@ -84,6 +84,7 @@ app.get('/searchSplitCity', (req, res) => {
 app.get('/searchGetResult', (req, res) => {
     searchResultPromise.then(
         () => {
+            console.log("Getting results", searchResult)
             res.status(200).send(searchResult)
             res.end()
         }
