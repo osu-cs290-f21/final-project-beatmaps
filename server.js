@@ -43,7 +43,11 @@ app.get('/findEvent', function (req, res) {
 })
 
 app.get('/result', (req, res)=>{
-    res.status(200).render('results', splitCity(searchResult))
+    searchResultPromise.then(
+        ()=>{
+    context = {city: splitCity(searchResult)}
+    res.status(200).render('results', context)}
+    )
 })
 
 app.post('/search', async (req, res, next) => {
