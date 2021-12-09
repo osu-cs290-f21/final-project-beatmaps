@@ -28,7 +28,7 @@ const login_h = (req, res) => {
         }));
 }
 
-const getTopUser_h = async (url) => {
+const getCurrentUser_h = async (url) => {
     const options = {
         url: 'https://api.spotify.com/v1/me' + url,
         headers: {'Authorization': 'Bearer ' + access_token},
@@ -115,5 +115,5 @@ module.exports = {
     auth: auth_h,
     login: login_h,
     refresh_token: refresh_token_h,
-    getTopUser: getTopUser_h
+    getCurrentUser: getCurrentUser_h
 }

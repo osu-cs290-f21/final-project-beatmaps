@@ -1,5 +1,6 @@
 const express = require('express')
 const events = require('./events')
+const exphbs = require('express-handlebars');
 const spotify = require('./spotify');
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
@@ -8,11 +9,14 @@ const {splitCity} = require("./utility");
 const {geocode} = require("./maps")
 
 let searchResult = {}
-let userInput
+let userInput;
 let searchResultPromise;
 let artist_list;
 
 const app = express()
+
+app.engine('handlebars', exphbs.engine({default: 'main'}))
+app.set('view engine', 'handlebars')
 
 app.use(express.static(__dirname + '/public'))
     .use(cors())
@@ -22,18 +26,34 @@ app.use(express.static(__dirname + '/public'))
 app.use(express.static('public'))
 
 app.get('/', function (req, res) {
-    res.status(200).render('initPage.handlebars', {
-        needAuth: true
-    })
+    res.status(200).render('initPage.handlebars')
 })
 
 app.get('/findEvent', function (req, res) {
-    res.status(200).render('initPage.handlebars', {
-        needAuth: false
-    })
+    spotify.getCurrentUser("").then(
+        data => {
+            console.log({
+                init: userInput === undefined,
+                user: {
+                    display_name: data.display_name,
+                    display_url: data.images[0].url
+                },
+                cities: splitCity(searchResult)
+            })
+            res.status(200).render('findEvent.handlebars', {
+                init: userInput === undefined,
+                user: {
+                    display_name: data.display_name,
+                    display_url: data.images[0].url
+                },
+                city: splitCity(searchResult)
+            })
+        }
+    )
 })
 
 app.post('/search', async (req, res, next) => {
+    console.log("in search")
     userInput = req.body
 
     const start_date = new Date(userInput.start_date)
@@ -45,7 +65,7 @@ app.post('/search', async (req, res, next) => {
         (data) => {
             searchResult = data
             console.log("done search")
-            res.status(204).end()
+            res.status(200).redirect('/findEvent')
         },
         () => {
             next()
@@ -98,7 +118,7 @@ app.get('/refresh_token', function (req, res) {
 });
 
 app.get('/topArtists', (req, res) => {
-    spotify.getTopUser("/top/artists").then(
+    spotify.getCurrentUser("/top/artists").then(
         (data) => {
             artist_list = data.items.map(
                 (objects) => {
@@ -110,7 +130,7 @@ app.get('/topArtists', (req, res) => {
             )
         }
     )
-    res.redirect("/get-info.html")
+    res.redirect("/findEvent")
 })
 
 app.get('*', (req, res) => {

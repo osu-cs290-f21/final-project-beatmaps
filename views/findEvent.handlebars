@@ -1,7 +1,6 @@
-{{> search userInfo}}
-{{#if init}}
-{{else}}
-{{#each city}}
-    {{>city cities events}}
-{{/each}}
-{{/if}}
+{{> search user}}
+{{#unless init}}
+    {{#each city}}
+        {{>city}}
+    {{/each}}
+{{/unless}}
