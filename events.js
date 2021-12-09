@@ -1,7 +1,6 @@
 const {https} = require('follow-redirects');
 const {parse} = require('node-html-parser');
 const utility = require("./utility")
-const {geocode} = require("./maps");
 /**
  * Limit number to a range
  */
@@ -93,7 +92,6 @@ const search_h = async (artist, location, date) => {
 const getConcerts_h = async (start_date, end_date, artists, location) => {
     let current_event_list = [];
     let promise_list = [];
-    await geocode(location) //to cache input location
     for (let i = start_date; i <= end_date; i.setDate(i.getDate() + 1)) { //loop through date
         const date_string = `${utility.monthString(i.getMonth())} ${i.getDate()}${utility.date_suffix(i.getDate())}` //construct string of date "[Month] [Date][Date suffix]"
 
