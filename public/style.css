@@ -453,9 +453,14 @@ input[type=range]::-ms-track {
 .search-clicked{
     background-color: #FF6B6B;
     color: #F6FFF7;
-    padding-left: 1.5rem;
+    height: 2rem;
+    display: flex;
+    align-items: baseline;
+    gap: 0.7rem;
+    transform: scale(1.5) translateX(5rem);
+    padding-left: 1rem;
     border-radius: 1rem 0 0 1rem;
-    font-size: 1.2rem;
+    font-size: 2rem;
 }
 
 /* event section */
