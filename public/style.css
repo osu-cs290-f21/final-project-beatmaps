@@ -1,17 +1,17 @@
-git /* house keeping */
-* {
+git/* house keeping */
+*{
     box-sizing: border-box;
 }
 
-body {
+body{
     margin: 0;
-    font-family: sofia-pro-soft, sans-serif;
+    font-family: sofia-pro-soft,sans-serif;
     font-weight: 400;
     font-style: normal;
-    background-color: #292F36;
+    background-color: #292F36 ;
 }
 
-img {
+img{
     max-width: 100%;
     height: auto;
 }
@@ -23,7 +23,7 @@ input[type=range] {
     width: 100%; /* Specific width is required for Firefox. */
     background: transparent; /* Otherwise white in Chrome */
 }
-
+  
 input[type=range]::-webkit-slider-thumb {
     -webkit-appearance: none;
 }
@@ -37,7 +37,7 @@ input[type=range]::-ms-track {
     cursor: pointer;
 
     /* Hides the slider so custom styles can be added */
-    background: transparent;
+    background: transparent; 
     border-color: transparent;
     color: transparent;
 }
@@ -55,7 +55,7 @@ input[type=range]::-webkit-slider-thumb {
     transition: ease-out 0.2s;
 }
 
-input[type=range]::-webkit-slider-thumb:hover {
+input[type=range]::-webkit-slider-thumb:hover{
     transform: scale(1.2);
 }
 
@@ -68,7 +68,7 @@ input[type=range]::-moz-range-thumb {
     cursor: pointer;
 }
 
-input[type=range]::-moz-range-thumb:hover {
+input[type=range]::-moz-range-thumb:hover{
     transform: scale(1.2);
 }
 
@@ -81,7 +81,7 @@ input[type=range]::-ms-thumb {
     cursor: pointer;
 }
 
-input[type=range]::-ms-thumb:hover {
+input[type=range]::-ms-thumb:hover{
     transform: scale(1.2);
 }
 
@@ -114,14 +114,14 @@ input[type=range]::-ms-track {
 
 /* input base style */
 
-.text-input p {
+.text-input p{
     color: #F6FFF7;
     margin: 0 0 0.4rem 0;
     margin-left: 0.5rem;
     font-weight: lighter;
 }
 
-.type-input {
+.type-input{
     font: inherit;
     border: none;
     border-radius: 0.6rem;
@@ -134,32 +134,32 @@ input[type=range]::-ms-track {
     transition: ease-out 0.2s;
 }
 
-.type-input:focus, input:focus {
+.type-input:focus, input:focus{
     outline: none;
 }
 
-.type-input::placeholder {
+.type-input::placeholder{
     color: #4ECDC4;
     opacity: 0.5;
 }
 
 /* navbar */
 
-.nav {
+.nav{
     position: absolute;
     width: 100%;
     padding: 4rem;
     z-index: 0;
 }
 
-.nav img {
+.nav img{
     max-width: 20rem;
     height: auto;
 }
 
 /* auth template */
 
-#auth {
+#auth{
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -167,16 +167,16 @@ input[type=range]::-ms-track {
     height: 100vh;
 }
 
-#auth h1 {
+#auth h1{
     color: #F6FFF7;
     font-size: 1.5rem;
 }
 
-#auth .btn {
+#auth .btn{
     margin: 2rem 0 1.5rem 0;
 }
 
-#auth button {
+#auth button{
     color: #F6FFF7;
     background-color: #4ECDC4;
     font: inherit;
@@ -190,19 +190,19 @@ input[type=range]::-ms-track {
     transition: ease-in 0.2s;
 }
 
-#auth button:hover {
+#auth button:hover{
     transform: scale(1.05);
     background-color: #FF6B6B;
     cursor: pointer;
 }
 
-#auth p {
+#auth p{
     color: #4ECDC4;
 }
 
 /* ====== initial info template ====== */
 
-#init-info {
+#init-info{
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -211,7 +211,7 @@ input[type=range]::-ms-track {
     /* justify-content: center; */
 }
 
-#user-info {
+#user-info{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -219,19 +219,19 @@ input[type=range]::-ms-track {
     /* width: 20rem; */
 }
 
-#user-icon {
+#user-icon{
     max-width: 7rem;
     border-radius: 50%;
 }
 
-.user-name {
+.user-name{
     color: #F6FFF7;
     text-align: center;
 }
 
 /* time-input */
 
-#user-inputs {
+#user-inputs{
     /* border: red solid 1px; */
     display: flex;
     flex-wrap: wrap;
@@ -241,93 +241,93 @@ input[type=range]::-ms-track {
     margin-top: 3rem;
 }
 
-:root {
+:root{
     --location-basis: 15rem;
 }
 
 /* REVISIT */
-#location-container {
+#location-container{
     width: var(--location-basis);
 }
 
-#location-container input {
+#location-container input{
     width: 100%;
 }
 
-#location-container input:hover {
+#location-container input:hover{
     width: calc(var(--location-basis) + 1rem);
 }
 
-#location-container input:focus {
+#location-container input:focus{
     width: 18rem;
 }
 
-#time-frame {
+#time-frame{
     display: flex;
     flex-direction: column;
 }
 
-#time-frame div input {
+#time-frame div input{
     width: 12rem;
     text-align: center;
 }
 
-#time-start {
-    border-radius: 0.6rem 0 0 0.6rem;
+#time-start{
+    border-radius: 0.6rem 0  0 0.6rem;
 }
 
-#time-end {
+#time-end{
     border-radius: 0 0.6rem 0.6rem 0;
     text-align: center;
 }
 
 /* hover animation */
 
-#time-frame input:hover {
+#time-frame input:hover{
     width: 13rem;
 }
 
-#time-frame input:focus {
+#time-frame input:focus{
     width: 13rem;
 }
 
 /* radius input */
 
-#radius {
+#radius{
     display: flex;
     flex-direction: column;
 }
 
-#radius-containter {
+#radius-containter{
     width: 30rem;
 }
 
-#radius-input {
+#radius-input{
     width: 4.5rem;
     text-align: center;
     margin-right: 1.5rem;
 }
 
-.radius-slider {
+.radius-slider{
     max-width: 20rem;
 }
 
 /* hover animation */
 
-#radius-input:hover {
+#radius-input:hover{
     width: 5rem;
 }
 
-#radius-input:focus {
+#radius-input:focus{
     width: 5rem;
 }
 
 /* search button */
-.search-btn {
+.search-btn{
     align-self: flex-end;
 }
 
-.search-btn button {
+.search-btn button{
     border: none;
     border-radius: 1.5rem;
     padding-bottom: 0.3rem;
@@ -340,14 +340,14 @@ input[type=range]::-ms-track {
     transition: ease-out 0.2s;
 }
 
-.search-btn button:hover {
+.search-btn button:hover{
     transform: scale(1.1);
     background-color: #4ECDC4;
 }
 
 /* ===== find event ===== */
 
-#find-event {
+#find-event{
     /* border: #FF6B6B solid 1px; */
     display: flex;
     padding: 4rem 4rem 6rem 4rem;
@@ -358,7 +358,7 @@ input[type=range]::-ms-track {
 
 /* map section */
 
-#map-section {
+#map-section{
     /* border: #FF6B6B solid 1px; */
     display: flex;
     flex-direction: column;
@@ -366,11 +366,11 @@ input[type=range]::-ms-track {
     width: 50rem;
 }
 
-#map img {
+#map img{
     border-radius: 1rem;
 }
 
-#map-filters {
+#map-filters{
     /* border: #FF6B6B solid 1px; */
     margin-top: 1rem;
     display: flex;
@@ -387,7 +387,7 @@ input[type=range]::-ms-track {
     background-color: #F6FFF7;
 } */
 
-#results-section {
+#results-section{
     /* border: solid red 1px; */
     position: relative;
     margin: 2rem 0 0rem 3rem;
@@ -408,20 +408,20 @@ input[type=range]::-ms-track {
     background-color: #F6FFF7;
 } */
 
-.city {
+.city{
     display: flex;
     flex-direction: column;
     padding-left: 1rem;
     gap: 2rem;
 }
 
-.city-name {
+.city-name{
     margin: 0;
     color: #F6FFF7;
     font-weight: normal;
 }
 
-.search-results {
+.search-results{
     height: 2rem;
     display: flex;
     align-items: baseline;
@@ -431,25 +431,25 @@ input[type=range]::-ms-track {
     transition: ease-out 0.2s;
 }
 
-.artist-name {
+.artist-name{
     font-weight: normal;
     font-size: 1.1rem;
     margin: 0;
 }
 
-.event-date {
+.event-date{
     font-weight: lighter;
     font-size: 0.9rem;
     margin: 0;
 }
 
-.search-results:hover {
+.search-results:hover{
     color: #FF6B6B;
     transform: scale(1.2) translateX(3rem);
     cursor: pointer;
 }
 
-.search-clicked {
+.search-clicked{
     background-color: #FF6B6B;
     color: #F6FFF7;
     padding-left: 1.5rem;
@@ -459,51 +459,51 @@ input[type=range]::-ms-track {
 
 /* event section */
 
-#event-section {
-    /* border: solid red 1px; */
-    position: relative;
-    margin: 2rem 0 0 0;
-    width: 25rem;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    border-left: #FF6B6B solid 0.4rem;
-    padding-left: 3rem;
-    gap: 1rem;
-    overflow-y: scroll;
+#event-section{
+     /* border: solid red 1px; */
+     position: relative;
+     margin: 2rem 0 0 0;
+     width: 25rem;
+     height: 100%;
+     display: flex;
+     flex-direction: column;
+     border-left: #FF6B6B solid 0.4rem;
+     padding-left: 3rem;
+     gap: 1rem;
+     overflow-y: scroll;
 }
 
-#artist-icon {
+#artist-icon{
     width: 17rem;
     margin: 5rem 0 2rem 0;
 }
 
-#artist-icon img {
+#artist-icon img{
     border-radius: 50%;
 }
 
-#artist-name {
+#artist-name{
     color: #FF6B6B;
     margin: 0;
 }
 
-#location-date {
+#location-date{
     display: flex;
     font-size: 0.9rem;
 }
 
-#concert-location {
+#concert-location{
     color: #FF6B6B;
     margin-right: 0.5rem;
     font-weight: lighter;
 }
 
-#concert-date {
+#concert-date{
     color: #FF6B6B;
     font-weight: lighter;
 }
 
-#concert-description {
+#concert-description{
     color: #F6FFF7;
     font-size: 0.9rem;
     width: 80%;
