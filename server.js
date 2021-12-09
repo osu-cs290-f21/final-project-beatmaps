@@ -30,17 +30,22 @@ app.get('/callback', function (req, res) {
 });
 
 app.get('/findEvent', function (req, res) {
-    //var userInfo = getTopArtist()
-    userInfo = {
-        photoURL: 'broke.jpeg',
-        userName: 'ella'
+    var userInfo = spotify.getTopArtist('')
+    userInfo.then( 
+    (data) => {
+        console.log(data)
+    },
+    (err) => {
+        console.log(err)
     }
+    )
     res.status(200).render('initPage.handlebars', {
         needAuth: false,
         userInfo: userInfo,
         cities: cities,
     })
 })
+
 
 app.get('/topArtists', function () {
     const artists = getTopArtist('top/artists')
