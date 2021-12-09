@@ -1,0 +1,64 @@
+{{log "results"}}
+{{log this}}
+
+<section id="find-event">
+    <div id="map-section">
+        <div id="map">
+            <img src="images/map-moc.png">
+        </div>
+        <div id="map-filters">
+            <div class="text-input" id="location-container">
+                <p>where are you?</p>
+                <div>
+                    <input class="type-input" id="location-input" placeholder="city, town or zip" type="text">
+                </div>
+            </div>
+            <div class="text-input" id="time-frame">
+                <p>for how long?</p>
+                <div>
+                    <input class="type-input" id="time-start" placeholder="set a start" type="date">
+                    <input class="type-input" id="time-end" placeholder="sent an end" type="date">
+                </div>
+            </div>
+            <div class="text-input" id="radius">
+                <p>how far do you wanna drive?</p>
+                <div id="radius-containter">
+                    <input class="type-input" id="radius-input" type="text" value="50">
+                    <input class="radius-slider" type="range">
+                </div>
+            </div>
+            <!-- <div class="search-btn">
+                <a href="find-event.html">
+                    <button>SEARCH</button>
+                </a>
+            </div> -->
+        </div>
+    </div>
+    <!-- <div id="shadow-top"> </div> -->
+    <div id="results-section">
+        {{#each this}}
+            {{>city}}
+        {{/each}}
+    </div>
+    <!-- <div id="shadow-bottom">a</div> -->
+    </div>
+    <div id="event-section">
+        <div class="selected-event">
+            <div id="artist-icon">
+                <img src="images/clement-pfp.png">
+            </div>
+            <h1 id="artist-name">Artist Name</h1>
+            <div id="location-date">
+                <h3 id="concert-location">Location</h3>
+                <h3 id="concert-date">- Date</h3>
+            </div>
+            <p id="concert-description">hey omg look I'm a paragraph explaning some bs about a convert please end me. I
+                am so tired of this rn plz send help.</p>
+            <div class="search-btn">
+                <a href="find-event.html">
+                    <button>TICKETS</button>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
