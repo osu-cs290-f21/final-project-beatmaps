@@ -1,5 +1,4 @@
-function addCity(city)
-{
+function addCity(city) {
     var context = {
         city: city
     }
@@ -8,8 +7,7 @@ function addCity(city)
     results.insertAdjacentHTML('beforeend', newCity)
 }
 
-function addEvent(artist, date, city)
-{
+function addEvent(artist, date, city) {
     var context = {
         artist: artist,
         date: date,
@@ -25,30 +23,40 @@ document.onreadystatechange = () => {
     if (document.readyState === 'complete') {
         var distanceText = document.getElementById('radius-input')
         var distanceSlider = document.getElementsByClassName('radius-slider')
-    
-        console.log("text-input: ", distanceText)
-        console.log("slider-input", distanceSlider)
 
         var distanceValue = 75
 
-        distanceText.addEventListener('change', function(){
+        distanceText.addEventListener('change', function () {
             distanceValue = distanceValidation(parseInt(distanceText.value), distanceValue)
             distanceSlider[0].value = distanceValue
-            console.log("distanceValue input changed to: ", distanceValue)
         })
 
-        distanceSlider[0].addEventListener('input', function(){
+        distanceSlider[0].addEventListener('input', function () {
             distanceValue = distanceValidation(parseInt(distanceSlider[0].value), distanceValue)
             distanceText.value = distanceValue
-            console.log("distanceValue input changed to: ", distanceValue)
         })
     }
-  };
 
-function distanceValidation(x, last){
-    if(isNaN(x)){
+    document.getElementById("search_button").addEventListener("click", () => {
+        console.log("Searching")
+        $.post("/search", {
+            location: document.getElementById("location-input").value,
+            start_date: document.getElementById("time-start").value,
+            end_date: document.getElementById("time-end").value,
+            radius: parseInt(document.getElementsByClassName("radius-slider")[0].value)
+        })
+    })
+
+};
+
+function distanceValidation(x, last) {
+    if (isNaN(x)) {
         return last
-    }else{
+    } else {
         return x
     }
 }
+
+Handlebars.registerHelper("log", function(something) {
+    console.log(something);
+});
