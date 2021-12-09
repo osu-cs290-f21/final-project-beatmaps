@@ -10,6 +10,7 @@ let circleRadius;
 // Attach your callback function to the `window` object
 window.initMap = function () {
     let searchResultPromise = $.get("/searchGetResult", (data) => {
+        console.log("get result:", data)
         events = data
         return data
     })
