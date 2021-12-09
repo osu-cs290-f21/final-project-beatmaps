@@ -21,9 +21,34 @@ function addEvent(artist, date, city)
 }
 
 //slider bar
-// var distanceText = document.getElementById('radius-input')
-var distanceText = document.getElementById('radius-containter')
-var distanceSlider = document.getElementsByClassName('radius-slider')
+document.onreadystatechange = () => {
+    if (document.readyState === 'complete') {
+        var distanceText = document.getElementById('radius-input')
+        var distanceSlider = document.getElementsByClassName('radius-slider')
+    
+        console.log("text-input: ", distanceText)
+        console.log("slider-input", distanceSlider)
 
-console.log("text-input: ", distanceText)
-console.log("slider-input", distanceSlider)
+        var distanceValue = 75
+
+        distanceText.addEventListener('change', function(){
+            distanceValue = distanceValidation(parseInt(distanceText.value), distanceValue)
+            distanceSlider[0].value = distanceValue
+            console.log("distanceValue input changed to: ", distanceValue)
+        })
+
+        distanceSlider[0].addEventListener('input', function(){
+            distanceValue = distanceValidation(parseInt(distanceSlider[0].value), distanceValue)
+            distanceText.value = distanceValue
+            console.log("distanceValue input changed to: ", distanceValue)
+        })
+    }
+  };
+
+function distanceValidation(x, last){
+    if(isNaN(x)){
+        return last
+    }else{
+        return x
+    }
+}
