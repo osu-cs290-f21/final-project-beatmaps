@@ -1,5 +1,6 @@
 const querystring = require("querystring")
 const request = require("request")
+const {generateRandomString} = require("./utility");
 
 const client_id = 'enter your spotify api client_id';_id';
 const client_secret = 'enter your spotify api client_secret';_secret';
@@ -9,21 +10,6 @@ let access_token;
 let refresh_token;
 
 let authOptions;
-
-/**
- * Generates a random string containing numbers and letters
- * @param  {number} length The length of the string
- * @return {string} The generated string
- */
-const generateRandomString = function (length) {
-    let text = '';
-    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-    for (let i = 0; i < length; i++) {
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
-    }
-    return text;
-};
 
 const login_h = (req, res) => {
 
@@ -42,15 +28,15 @@ const login_h = (req, res) => {
         }));
 }
 
-const getArtist_h = async (url) => {
+const getTopUser_h = async (url) => {
     const options = {
-        url: 'https://api.spotify.com/v1/me/' + url,
+        url: 'https://api.spotify.com/v1/me' + url,
         headers: {'Authorization': 'Bearer ' + access_token},
         json: true
     };
 
     // use the access token to access the Spotify Web API
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         request.get(options, function (error, response, body) {
             resolve(body)
         })
@@ -94,7 +80,7 @@ const auth_h = (req, res) => {
             refresh_token = body.refresh_token;
 
             // we can also pass the token to the browser to make requests from there
-            res.redirect('/findEvent');
+            res.redirect('/topArtists');
         } else {
             res.redirect('/failed');
         }
@@ -129,5 +115,5 @@ module.exports = {
     auth: auth_h,
     login: login_h,
     refresh_token: refresh_token_h,
-    getTopArtist: getArtist_h
+    getTopUser: getTopUser_h
 }
